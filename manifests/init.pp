@@ -7,10 +7,18 @@ class base (
 
   # Paquetes
   package { [
-    "rsync",
+    'rsync', 'ccze', 'zsh', 'git', 'mc', 'aide', 'curl', 'gnupg', 'ncdu', 'nmap', 'p7zip',
+    'smartmontools', 'unzip', 'unrar', 'wget', 'ranger', 'sudo', 'pwgen', 'mmv', 'lsof',
+    'colordiff',
   ] :
     ensure => present,
   }
 
+  if $::operatingsystem == 'OpenBSD' {
+    package { [ 'colorls', 'findutils', 'gtar', 'p7zip-rar' ] :
+      ensure => present,
+    }
+  }
+  
 }
   
