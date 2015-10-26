@@ -3,19 +3,32 @@
 
 class base (
 
+  $base_packages    = undef,
+  $openbsd_packages = undef,
+  $freebsd_packages = undef,
+  $debian_packages  = undef,
+
   ) {
 
   # Paquetes
-  package { [
-    'rsync', 'ccze', 'zsh', 'git', 'mc', 'aide', 'curl', 'gnupg', 'ncdu', 'nmap', 'p7zip',
-    'smartmontools', 'unzip', 'unrar', 'wget', 'ranger', 'sudo', 'pwgen', 'mmv', 'lsof',
-    'colordiff',
-  ] :
+  package { $base_packages :
     ensure => present,
   }
 
   if $::operatingsystem == 'OpenBSD' {
-    package { [ 'colorls', 'findutils', 'gtar', 'p7zip-rar' ] :
+    package { $openbsd_packages :
+      ensure => present,
+    }
+  }
+
+  if $::operatingsystem == 'FreeBSD' {
+    package { $freebsd_packages :
+      ensure => present,
+    }
+  }
+
+  if $::operatingsystem == 'Debian' {
+    package { $debian_packages :
       ensure => present,
     }
   }
