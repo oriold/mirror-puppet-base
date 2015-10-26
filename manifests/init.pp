@@ -16,10 +16,6 @@ class base (
   $ssh_service = hiera('ssh_service')
 
   # Paquetes
-  package { $base_packages :
-    ensure => installed,
-  }
-
   if $::operatingsystem == 'OpenBSD' {
 
     if $::operatingsystemrelease =~ /.*current/ {
@@ -41,20 +37,20 @@ class base (
         }
       }
     } ->
-    package { $openbsd_packages :
+    package { [ $base_packages, $openbsd_packages ] :
       ensure          => installed,
       install_options => '-v',
     }
   }
 
   if $::operatingsystem == 'FreeBSD' {
-    package { $freebsd_packages :
+    package { [ $base_packages, $freebsd_packages ] :
       ensure => installed,
     }
   }
 
   if $::operatingsystem == 'Debian' {
-    package { $debian_packages :
+    package { [ $base_packages, $debian_packages ] :
       ensure => installed11,
     }
   }
