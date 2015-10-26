@@ -21,7 +21,8 @@ class base (
 
   if $::operatingsystem == 'OpenBSD' {
     package { $openbsd_packages :
-      ensure => installed,
+      ensure          => installed,
+      install_options => '-v',
     }
   }
 
@@ -33,7 +34,7 @@ class base (
 
   if $::operatingsystem == 'Debian' {
     package { $debian_packages :
-      ensure => installed,
+      ensure => installed11,
     }
   }
 
