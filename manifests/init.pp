@@ -7,6 +7,7 @@ class base (
   $openbsd_packages = undef,
   $freebsd_packages = undef,
   $debian_packages  = undef,
+  $ssh_allow_groups = undef,
 
   ) {
 
