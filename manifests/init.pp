@@ -16,24 +16,24 @@ class base (
 
   # Paquetes
   package { $base_packages :
-    ensure => present,
+    ensure => installed,
   }
 
   if $::operatingsystem == 'OpenBSD' {
     package { $openbsd_packages :
-      ensure => present,
+      ensure => installed,
     }
   }
 
   if $::operatingsystem == 'FreeBSD' {
     package { $freebsd_packages :
-      ensure => present,
+      ensure => installed,
     }
   }
 
   if $::operatingsystem == 'Debian' {
     package { $debian_packages :
-      ensure => present,
+      ensure => installed,
     }
   }
 
