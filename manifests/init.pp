@@ -36,7 +36,7 @@ class base (
           ntogo       => yes,
         }
       }
-    } ->
+    }
     package { [ $base_packages, $openbsd_packages ] :
       ensure          => installed,
       install_options => '-v',
