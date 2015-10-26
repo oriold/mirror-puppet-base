@@ -37,6 +37,15 @@ class base (
         }
       }
     }
+
+    file { [
+      '/etc/signify/mtier-58-pkg.pub',
+    ] :
+      owner  => root,
+      group  => wheel,
+      mode   => '0644',
+      source => 'puppet:///modules/base/mtier-58-pkg.pub',
+    } ->
     package { [ $base_packages, $openbsd_packages ] :
       ensure          => installed,
       install_options => '-v',
