@@ -60,7 +60,7 @@ class base (
 
   if $::operatingsystem == 'Debian' {
     package { [ $base_packages, $debian_packages ] :
-      ensure => installed11,
+      ensure => installed,
     }
   }
 
