@@ -8,6 +8,7 @@ class base (
   $freebsd_packages = undef,
   $debian_packages  = undef,
   $ssh_allow_groups = undef,
+  $openbsd_mirror   = undef,
 
   ) {
 
@@ -20,6 +21,27 @@ class base (
   }
 
   if $::operatingsystem == 'OpenBSD' {
+
+    if $::operatingsystemrelease =~ /.*current/ {
+      class { 'openbsd::pkg_conf' :
+        settings => {
+          installpath => "http://${openbsd_mirror}/snapshots/packages/${::architecture}/",
+          ntogo       => yes,
+        }
+      }
+    }
+    else {
+      class { 'openbsd::pkg_conf' :
+        settings => {
+          installpath => [
+            "http://${openbsd_mirror}/${::operatingsystemrelease}/packages/${::architecture}/",
+            "https://stable.mtier.org/updates/${::operatingsystemrelease}/${::architecture}/",
+          ],
+          ntogo       => yes,
+        }
+      }
+    }
+        
     package { $openbsd_packages :
       ensure          => installed,
       install_options => '-v',
