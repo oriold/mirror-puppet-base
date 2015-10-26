@@ -10,6 +10,9 @@ class base (
 
   ) {
 
+  # Hiera
+  $ssh_service = hiera('ssh_service')
+
   # Paquetes
   package { $base_packages :
     ensure => present,
@@ -32,6 +35,20 @@ class base (
       ensure => present,
     }
   }
+
+  # SSH
+  service { $ssh_service :
+    ensure => running,
+  }
+
+  file { '/etc/ssh/sshd_config' :
+    owner   => root,
+    group   => 0,
+    mode    => '0644',
+    content => template('base/sshd_config.erb'),
+    notify  => Service[$ssh_service],
+  }
+  
   
 }
   
