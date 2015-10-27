@@ -1,7 +1,8 @@
 
 # Class for the OpenNTPd server
 
-class ntpd_server inherits ntpd::service::openbsd {
+define base::openntpd_server inherits ntpd::service::openbsd {
+
   class { 'ntpd' :
     settings => [
       'servers pool.ntp.org',
@@ -12,7 +13,12 @@ class ntpd_server inherits ntpd::service::openbsd {
   }
 }
 
-class ntpd_client {
+define base::ntpd_client (
+
+  $ntp_servers = undef,
+  
+  ) {
+
   class { 'ntpd' :
     settings => $ntp_servers,
   }
