@@ -25,6 +25,7 @@ class base (
         settings => {
           installpath => "http://${openbsd_mirror}/snapshots/packages/${::architecture}/",
           ntogo       => yes,
+          loglevel    => 1,
         }
       }
     }
@@ -36,6 +37,7 @@ class base (
             "https://stable.mtier.org/updates/${::operatingsystemrelease}/${::architecture}/",
           ],
           ntogo       => yes,
+          loglevel    => 1,
         }
       }
     }
