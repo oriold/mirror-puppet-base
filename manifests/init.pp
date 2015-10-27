@@ -9,7 +9,6 @@ class base (
   $debian_packages  = undef,
   $ssh_allow_groups = undef,
   $openbsd_mirror   = undef,
-  $ntp_master       = undef,
   $ntp_servers      = undef,
 
   ) {
