@@ -57,18 +57,20 @@ class base (
 
     # NTP stuff
     if $ntp_master {
-      class opentpd_server inherits ntpd::service::openbsd {
-        class { 'ntpd' :
-          settings => 'servers pool.ntpd.org',
-        }
-        Rcconf['ntpd_flags'] {
-          value => '"-s"',
-        }
+      class { 'ntpd' :
+        settings => [
+          'servers pool.ntpd.org',
+          ],
+      }
+      Rcconf['ntpd_flags'] {
+        value => '"-s"',
       }
     }
     else {
       class { 'ntpd' :
-        settings => "servers ${ntp_servers}",
+        settings => [
+          "servers ${ntp_servers}",
+          ],
       }
     }
   }
