@@ -9,6 +9,8 @@ class base (
   $debian_packages  = undef,
   $ssh_allow_groups = undef,
   $openbsd_mirror   = undef,
+  $ntp_master       = undef,
+  $ntp_servers      = undef,
 
   ) {
 
@@ -50,6 +52,8 @@ class base (
       ensure          => installed,
       install_options => '-v',
     }
+
+        
   }
 
   if $::operatingsystem == 'FreeBSD' {
@@ -76,7 +80,6 @@ class base (
     content => template('base/sshd_config.erb'),
     notify  => Service[$ssh_service],
   }
-  
-  
+
 }
   
