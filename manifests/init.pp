@@ -100,5 +100,13 @@ class base (
     notify  => Service[$ssh_service],
   }
 
+  # Dig
+  file { '/etc/trusted-key.key' :
+    owner  => root,
+    group  => 0,
+    mode   => '0644',
+    source => 'puppet:///modules/base/trusted-key.key',
+  }
+  
 }
   
