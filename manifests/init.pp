@@ -57,7 +57,7 @@ class base (
 
     # NTP stuff
     if $ntp_master {
-      class ntpd_master inherits ntpd::service::openbsd {
+      class ntpd_server inherits ntpd::service::openbsd {
         class { 'ntpd' :
           settings => [
             'servers pool.ntpd.org',
