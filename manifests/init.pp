@@ -49,35 +49,36 @@ class base (
       group  => wheel,
       mode   => '0644',
       source => 'puppet:///modules/base/mtier-58-pkg.pub',
-    } ->
-    package { [ $base_packages, $openbsd_packages ] :
-      ensure          => installed,
-      install_options => '-v',
-    }
-
-    # NTP stuff
-    if $ntp_master {
-      Rcconf['ntpd_flags'] {
-        value => '"-s"',
+      } ->
+      package { [ $base_packages, $openbsd_packages ] :
+        ensure          => installed,
+        install_options => '-v',
       }
-    }
-    class { 'ntpd' :
-      settings => [
-        "servers ${ntp_servers}",
-      ],
-    }
 
-    if $::operatingsystem == 'FreeBSD' {
-      package { [ $base_packages, $freebsd_packages ] :
-        ensure => installed,
+      # NTP stuff
+      if $ntp_master {
+        Rcconf['ntpd_flags'] {
+          value => '"-s"',
+        }
       }
-    }
+      class { 'ntpd' :
+        settings => [
+          "servers ${ntp_servers}",
+        ],
+      }
+  }
 
-    if $::operatingsystem == 'Debian' {
-      package { [ $base_packages, $debian_packages ] :
-        ensure => installed,
-      }
+  if $::operatingsystem == 'FreeBSD' {
+    package { [ $base_packages, $freebsd_packages ] :
+      ensure => installed,
     }
+  }
+
+  if $::operatingsystem == 'Debian' {
+    package { [ $base_packages, $debian_packages ] :
+      ensure => installed,
+    }
+  }
 
   # SSH
   service { $ssh_service :
