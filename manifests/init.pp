@@ -57,7 +57,7 @@ class base (
 
       # NTP stuff
       if $ntp_master {
-        Rcconf['ntpd_flags'] {
+        rcconf { 'ntpd_flags' :
           value => '"-s"',
         }
       }
