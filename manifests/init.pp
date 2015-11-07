@@ -57,37 +57,27 @@ class base (
 
     # NTP stuff
     if $ntp_master {
-      class ntpd_server inherits ntpd::service::openbsd {
-        class { 'ntpd' :
-          settings => [
-            'servers pool.ntpd.org',
-          ],
-        }
-        Rcconf['ntpd_flags'] {
-          value => '"-s"',
-        }
+      Rcconf['ntpd_flags'] {
+        value => '"-s"',
       }
     }
-    else {
-      class { 'ntpd' :
-        settings => [
-          "servers ${ntp_servers}",
-        ],
+    class { 'ntpd' :
+      settings => [
+        "servers ${ntp_servers}",
+      ],
+    }
+
+    if $::operatingsystem == 'FreeBSD' {
+      package { [ $base_packages, $freebsd_packages ] :
+        ensure => installed,
       }
     }
-  }
 
-  if $::operatingsystem == 'FreeBSD' {
-    package { [ $base_packages, $freebsd_packages ] :
-      ensure => installed,
+    if $::operatingsystem == 'Debian' {
+      package { [ $base_packages, $debian_packages ] :
+        ensure => installed,
+      }
     }
-  }
-
-  if $::operatingsystem == 'Debian' {
-    package { [ $base_packages, $debian_packages ] :
-      ensure => installed,
-    }
-  }
 
   # SSH
   service { $ssh_service :
