@@ -57,20 +57,22 @@ class base (
 
     # NTP stuff
     if $ntp_master {
-      class { 'ntpd' :
-        settings => [
-          'servers pool.ntpd.org',
+      class ntpd_master inherits ntpd {
+        class { 'ntpd_master' :
+          settings => [
+            'servers pool.ntpd.org',
           ],
-      }
-      Rcconf['ntpd_flags'] {
-        value => '"-s"',
+        }
+        Rcconf['ntpd_flags'] {
+          value => '"-s"',
+        }
       }
     }
     else {
       class { 'ntpd' :
         settings => [
           "servers ${ntp_servers}",
-          ],
+        ],
       }
     }
   }
