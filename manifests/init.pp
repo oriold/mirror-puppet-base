@@ -79,12 +79,24 @@ class base (
     package { [ $base_packages, $freebsd_packages ] :
       ensure => installed,
     }
+
+    # NTP
+    class { '::ntp' :
+      servers => "${ntp_servers}",
+    }
+    
   }
 
   if $::operatingsystem == 'Debian' {
     package { [ $base_packages, $debian_packages ] :
       ensure => installed,
     }
+
+    # NTP
+    class { '::ntp' :
+      servers => "${ntp_servers}",
+    }
+
   }
 
   # SSH
