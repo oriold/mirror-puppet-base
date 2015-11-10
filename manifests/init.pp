@@ -56,23 +56,31 @@ class base (
       group  => wheel,
       mode   => '0644',
       source => 'puppet:///modules/base/mtier-58-pkg.pub',
-      } ->
-      package { [ $base_packages, $openbsd_packages ] :
-        ensure          => installed,
-        install_options => '-v',
-      }
+    } ->
+    package { [ $base_packages, $openbsd_packages ] :
+      ensure          => installed,
+      install_options => '-v',
+    }
 
-      # NTP Server
-      if $ntp_master {
-        class { 'ntpd_server' : }
-      }
+    # Ports configuration
+    file { '/etc/mk.conf' :
+      owner  => root,
+      group  => wheel,
+      mode   => '0644',
+      source => 'puppet:///modules/base/openbsd.mk.conf',
+    }
+    
+    # NTP Server
+    if $ntp_master {
+      class { 'ntpd_server' : }
+    }
 
-      # NTP normal
-      class { 'ntpd' :
-        settings => [
-          "servers ${ntp_servers}",
-        ],
-      }
+    # NTP normal
+    class { 'ntpd' :
+      settings => [
+        "servers ${ntp_servers}",
+      ],
+    }
   }
 
   if $::operatingsystem == 'FreeBSD' {
