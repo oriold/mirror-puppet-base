@@ -17,6 +17,13 @@ class base (
   # Hiera
   $ssh_service = hiera('ssh_service')
 
+  # OpenNTPd server
+  class ntpd_server inherits ntpd::service::openbsd {
+    Rcconf['ntpd_flags'] {
+      value => '"-s"',
+    }
+  }
+  
   # Paquetes
   if $::operatingsystem == 'OpenBSD' {
 
@@ -55,12 +62,12 @@ class base (
         install_options => '-v',
       }
 
-      # NTP stuff
+      # NTP Server
       if $ntp_master {
-        rcconf { 'ntpd_flags' :
-          value => '"-s"',
-        }
+        class { 'ntpd_server' : }
       }
+
+      # NTP normal
       class { 'ntpd' :
         settings => [
           "servers ${ntp_servers}",
