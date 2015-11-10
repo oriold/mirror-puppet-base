@@ -82,7 +82,7 @@ class base (
 
     # NTP
     class { '::ntp' :
-      servers => "${ntp_servers}",
+      servers => [ "${ntp_servers}" ],
     }
     
   }
@@ -94,7 +94,7 @@ class base (
 
     # NTP
     class { '::ntp' :
-      servers => "${ntp_servers}",
+      servers => [ "${ntp_servers}" ],
     }
 
   }
