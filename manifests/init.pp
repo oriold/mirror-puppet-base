@@ -27,7 +27,7 @@ class base (
   # Paquetes
   if $::operatingsystem == 'OpenBSD' {
 
-    if $::operatingsystemrelease =~ /.*current/ {
+    if $::operatingsystemrelease =~ /.*(current|beta)/ {
       class { 'openbsd::pkg_conf' :
         settings => {
           installpath => "http://${openbsd_mirror}/snapshots/packages/${::architecture}/",
