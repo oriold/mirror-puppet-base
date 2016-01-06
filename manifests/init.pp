@@ -4,13 +4,13 @@
 class base (
 
   $base_packages    = undef,
-  $openbsd_packages = undef,
-  $freebsd_packages = undef,
   $debian_packages  = undef,
-  $ssh_allow_groups = undef,
-  $openbsd_mirror   = undef,
-  $ntp_servers      = undef,
+  $freebsd_packages = undef,
   $ntp_master       = undef,
+  $ntp_servers      = undef,
+  $openbsd_mirror   = undef,
+  $openbsd_packages = undef,
+  $ssh_allow_groups = undef,
 
   ) {
 
@@ -90,7 +90,7 @@ class base (
 
     # NTP
     class { '::ntp' :
-      servers => [ "${ntp_servers}" ],
+      servers => [ $ntp_servers ],
     }
     
   }
@@ -102,7 +102,7 @@ class base (
 
     # NTP
     class { '::ntp' :
-      servers => [ "${ntp_servers}" ],
+      servers => [ $ntp_servers ],
     }
 
   }
