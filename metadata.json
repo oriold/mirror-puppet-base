@@ -1,28 +1,28 @@
 {
-  "name": "base",
-  "version": "0.1.0",
-  "author": "Oriol Demaria",
-  "summary": "Standard server setup for all servers.",
-  "license": "ISC",
-  "source": "git@gitlab.the-grid.xyz:puppet/puppet-base.git",
-  "project_page": "https://gitlab.the-grid.xyz/puppet/puppet-base",
-  "issues_url": null,
-  "dependencies": [ 
-    {
-      "name": "oppegaard/openbsd",
-      "version_range": ">= 0.1.1"
-    },
-    {
-      "name": "oppegaard/ntpd",
-      "version_range": ">= 0.1.0"
-    },
-    {
-      "name": "puppetlabs-ntp",
-      "version_range": "4.1.0"
-    },
-    {
-      "name": "zleslie-pkgng",
-      "version_range": "0.3.0"
-    }
-  ]
+    "name": "base",
+    "version": "0.1.0",
+    "author": "Oriol Demaria",
+    "summary": "Standard server setup for all servers.",
+    "license": "ISC",
+    "source": "git@gitlab.the-grid.xyz:puppet/puppet-base.git",
+    "project_page": "https://gitlab.the-grid.xyz/puppet/puppet-base",
+    "issues_url": null,
+    "dependencies": [ 
+	{
+	    "name": "oppegaard/openbsd",
+	    "version_range": ">= 0.1.1"
+	},
+	{
+	    "name": "oppegaard/ntpd",
+	    "version_range": ">= 0.1.0"
+	},
+	{
+	    "name": "puppetlabs-ntp",
+	    "version_range": ">=4.1.0"
+	},
+	{
+	    "name": "zleslie-pkgng",
+	    "version_range": ">=0.3.0"
+	}
+    ]
 }
