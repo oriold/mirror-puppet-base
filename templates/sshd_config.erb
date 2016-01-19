@@ -10,6 +10,8 @@ HostKey 	     /etc/ssh/ssh_host_rsa_key
 AllowGroups	     @ssh_allow_groups
 <% end -%>
 
+UseRoaming	     no
+
 # Ciphers
 KexAlgorithms 	     curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
 Ciphers 	     chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
