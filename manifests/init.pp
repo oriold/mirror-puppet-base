@@ -19,6 +19,13 @@ class base (
 
   # OpenNTPd server
   class ntpd_server inherits ntpd::service::openbsd {
+    class { 'ntpd' :
+      settings => [
+        "servers pool.ntp.org",
+        "listen on *",
+      ]
+    }
+
     Rcconf['ntpd_flags'] {
       value => '"-s"',
     }
@@ -72,14 +79,7 @@ class base (
     
     # NTP Server
     if $ntp_master {
-      class { 'ntpd_server' :
-        class { 'ntpd' :
-          settings => [
-            "servers europe.pool.ntp.org",
-            "listen on *",
-          ]
-        }
-      }
+      class { 'ntpd_server' : }
     }
 
     # NTP normal
