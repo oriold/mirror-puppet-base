@@ -17,23 +17,33 @@ class base (
   # Hiera
   $ssh_service = hiera('ssh_service')
 
-  # OpenNTPd server
-  class ntpd_server inherits ntpd::service::openbsd {
-    class { 'ntpd' :
-      settings => [
-        "servers pool.ntp.org",
-        "listen on *",
-      ]
-    }
-
-    Rcconf['ntpd_flags'] {
-      value => '"-s"',
-    }
-  }
   
   # Paquetes
   if $::operatingsystem == 'OpenBSD' {
 
+    # OpenNTPd server
+    if $ntp_master {
+      class ntpd_server inherits ntpd::service::openbsd {
+        class { 'ntpd' :
+          settings => [
+            "servers pool.ntp.org",
+            "listen on *",
+          ]
+        }
+
+        Rcconf['ntpd_flags'] {
+          value => '"-s"',
+        }
+      }
+    }
+    else {
+      class { 'ntpd' :
+        settings => [
+          "servers ${ntp_servers}",
+        ],
+      }
+    }    
+      
     if $::operatingsystemrelease =~ /5.9/ {
       class { 'openbsd::pkg_conf' :
         settings => {
@@ -63,31 +73,19 @@ class base (
       group  => wheel,
       mode   => '0644',
       source => 'puppet:///modules/base/mtier-58-pkg.pub',
-    } ->
-    package { [ $base_packages, $openbsd_packages ] :
-      ensure          => installed,
-      install_options => '-v',
-    }
+      } ->
+      package { [ $base_packages, $openbsd_packages ] :
+        ensure          => installed,
+        install_options => '-v',
+      }
 
-    # Ports configuration
-    file { '/etc/mk.conf' :
-      owner  => root,
-      group  => wheel,
-      mode   => '0644',
-      source => 'puppet:///modules/base/openbsd.mk.conf',
-    }
-    
-    # NTP Server
-    if $ntp_master {
-      class { 'ntpd_server' : }
-    }
-
-    # NTP normal
-    class { 'ntpd' :
-      settings => [
-        "servers ${ntp_servers}",
-      ],
-    }
+      # Ports configuration
+      file { '/etc/mk.conf' :
+        owner  => root,
+        group  => wheel,
+        mode   => '0644',
+        source => 'puppet:///modules/base/openbsd.mk.conf',
+      }
   }
 
   if $::operatingsystem == 'FreeBSD' {
