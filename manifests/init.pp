@@ -72,7 +72,14 @@ class base (
     
     # NTP Server
     if $ntp_master {
-      class { 'ntpd_server' : }
+      class { 'ntpd_server' :
+        class { 'ntpd' :
+          settings => [
+            "servers europe.pool.ntp.org",
+            "listen on *",
+          ]
+        }
+      }
     }
 
     # NTP normal
