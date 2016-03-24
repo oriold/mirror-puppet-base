@@ -23,7 +23,7 @@ class base (
 
     # OpenNTPd server
     if $ntp_master {
-      include base::ntpd_master
+      include base::ntpd_server
     }
     else {
       class { 'ntpd' :
