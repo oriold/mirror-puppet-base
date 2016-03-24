@@ -22,18 +22,17 @@ class base (
   if $::operatingsystem == 'OpenBSD' {
 
     # OpenNTPd server
-    class ntpd_server inherits ntpd::service::openbsd {
-      class { 'ntpd' :
-        settings => [
-          "servers pool.ntp.org",
-          "listen on *",
-        ]
-      }
-
-      Rcconf['ntpd_flags'] {
-        value => '"-s"',
-      }
+    class { 'ntpd' :
+      settings => [
+        "servers pool.ntp.org",
+        "listen on *",
+      ]
     }
+
+    Rcconf['ntpd_flags'] {
+      value => '"-s"',
+    }
+
       
     if $::operatingsystemrelease =~ /5.9/ {
       class { 'openbsd::pkg_conf' :
