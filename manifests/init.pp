@@ -22,17 +22,16 @@ class base (
   if $::operatingsystem == 'OpenBSD' {
 
     # OpenNTPd server
-    class { 'ntpd' :
-      settings => [
-        "servers pool.ntp.org",
-        "listen on *",
-      ]
+    if $ntp_master {
+      include base::ntpd_master
     }
-
-    Rcconf['ntpd_flags'] {
-      value => '"-s"',
+    else {
+      class { 'ntpd' :
+        settings => [
+          "servers ${ntp_servers}",
+        ]
+      }
     }
-
       
     if $::operatingsystemrelease =~ /5.9/ {
       class { 'openbsd::pkg_conf' :
