@@ -10,6 +10,7 @@ class base (
   $ntp_servers      = undef,
   $openbsd_mirror   = undef,
   $openbsd_packages = undef,
+  $openbsd_version  = undef,
   $ssh_allow_groups = undef,
 
   ) {
@@ -33,35 +34,21 @@ class base (
       }
     }
       
-    if $::operatingsystemrelease =~ /5.9/ {
-      class { 'openbsd::pkg_conf' :
-        settings => {
-          installpath => "http://${openbsd_mirror}/snapshots/packages/${::architecture}/",
-          ntogo       => yes,
-          loglevel    => 1,
-        }
-      }
-    }
-    else {
-      class { 'openbsd::pkg_conf' :
-        settings => {
-          installpath => [
-            "http://${openbsd_mirror}/${::operatingsystemrelease}/packages/${::architecture}/",
-            "https://stable.mtier.org/updates/${::operatingsystemrelease}/${::architecture}/",
-          ],
-          ntogo       => yes,
-          loglevel    => 1,
-        }
+    class { 'openbsd::pkg_conf' :
+      settings => {
+        installpath => "http://${openbsd_mirror}/${openbsd_version}/packages/${::architecture}/",
+        ntogo       => yes,
+        loglevel    => 1,
       }
     }
 
     file { [
-      '/etc/signify/mtier-58-pkg.pub',
+      '/etc/signify/mtier-59-pkg.pub',
     ] :
       owner  => root,
       group  => wheel,
       mode   => '0644',
-      source => 'puppet:///modules/base/mtier-58-pkg.pub',
+      source => 'puppet:///modules/base/mtier-59-pkg.pub',
       } ->
       package { [ $base_packages, $openbsd_packages ] :
         ensure          => installed,
