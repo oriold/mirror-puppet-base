@@ -12,13 +12,12 @@ class base (
   $openbsd_packages = undef,
   $openbsd_version  = undef,
   $ssh_allow_groups = undef,
-  $ssl_dir          = undef,
 
   ) {
 
   # Hiera
   $ssh_service = hiera('ssh_service')
-
+  $ssl_dir     = hiera('ssl_dir')
   
   # Paquetes
   if $::operatingsystem == 'OpenBSD' {
@@ -124,6 +123,12 @@ class base (
   }
 
   # SSL
+  file { [ '/dhparam.pem',
+           '/dhparam-4096.pem',
+  ] :
+    ensure => absent,
+  }
+  
   file { "$ssl_dir/dhparam.pem" :
     owner  => root,
     group  => 0,
