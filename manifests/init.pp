@@ -12,6 +12,7 @@ class base (
   $openbsd_packages = undef,
   $openbsd_version  = undef,
   $ssh_allow_groups = undef,
+  $ssl_dir          = undef,
 
   ) {
 
@@ -120,6 +121,21 @@ class base (
     group  => 0,
     mode   => '0644',
     source => 'puppet:///modules/base/unbound.root.key',
+  }
+
+  # SSL
+  file { "$ssl_dir/dhparam.pem" :
+    owner  => root,
+    group  => 0,
+    mode   => '0600',
+    source => 'puppet:///modules/base/dhparam.pem',
+  }
+
+  file { "$ssl_dir/dhparam-4096.pem" :
+    owner  => root,
+    group  => 0,
+    mode   => '0600',
+    source => 'puppet:///modules/base/dhparam-4096.pem',
   }
   
 }
