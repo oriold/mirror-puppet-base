@@ -6,8 +6,4 @@ class base::ntpd_server inherits ntpd::service::openbsd {
       "servers pool.ntp.org",
     ],
   }
-  
-  Rcconf['ntpd_flags'] {
-    value => '"-s"',
-  }
 }
