@@ -33,10 +33,6 @@ class base (
         ]
       }
     }
-
-    Rcconf['ntpd_flags'] {
-      value => '"-s"',
-    }
       
     class { 'openbsd::pkg_conf' :
       settings => {
