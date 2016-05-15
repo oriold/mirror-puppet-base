@@ -17,6 +17,7 @@ class base (
 
   # Hiera
   $ssh_service = hiera('ssh_service')
+  $ssl_dir     = hiera('ssl_dir')
   
   # Paquetes
   if $::operatingsystem == 'OpenBSD' {
@@ -123,6 +124,27 @@ class base (
     group  => 0,
     mode   => '0644',
     source => 'puppet:///modules/base/unbound.root.key',
+  }
+
+  # SSL
+  file { [ '/dhparam.pem',
+           '/dhparam-4096.pem',
+  ] :
+    ensure => absent,
+  }
+  
+  file { "$ssl_dir/dhparam.pem" :
+    owner  => root,
+    group  => 0,
+    mode   => '0600',
+    source => 'puppet:///modules/base/dhparam.pem',
+  }
+
+  file { "$ssl_dir/dhparam-4096.pem" :
+    owner  => root,
+    group  => 0,
+    mode   => '0600',
+    source => 'puppet:///modules/base/dhparam-4096.pem',
   }
   
 }
