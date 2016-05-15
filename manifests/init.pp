@@ -13,14 +13,17 @@ class base (
   $openbsd_version  = undef,
   $ssh_allow_groups = undef,
 
-  ) {
+) {
 
   # Hiera
   $ssh_service = hiera('ssh_service')
-
   
   # Paquetes
   if $::operatingsystem == 'OpenBSD' {
+
+    Rcconf['apmd_flags'] {
+      value => '"-A"',
+    }
 
     # OpenNTPd server
     if $ntp_master {
@@ -29,11 +32,11 @@ class base (
     else {
       class { 'ntpd' :
         settings => [
-          "servers ${ntp_servers}",
-        ]
+                     "servers ${ntp_servers}",
+                     ]
       }
     }
-      
+    
     class { 'openbsd::pkg_conf' :
       settings => {
         installpath => "http://${openbsd_mirror}/${openbsd_version}/packages/${::architecture}/",
@@ -43,8 +46,8 @@ class base (
     }
 
     file { [
-      '/etc/signify/mtier-59-pkg.pub',
-    ] :
+            '/etc/signify/mtier-59-pkg.pub',
+            ] :
       owner  => root,
       group  => wheel,
       mode   => '0644',
