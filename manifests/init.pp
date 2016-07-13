@@ -22,9 +22,9 @@ class base (
   # Paquetes
   if $::operatingsystem == 'OpenBSD' {
 
-    Rcconf['apmd_flags'] {
-      value => '"-A"',
-    }
+    #Rcconf['apmd_flags'] {
+    #  value => '"-A"',
+    #}
 
     # OpenNTPd server
     if $ntp_master {
