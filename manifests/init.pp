@@ -1,5 +1,4 @@
-
-# Este es el módulo base con mi usuario, paquetes que quiera instalar, etc.
+# Basic module
 
 class base (
 
