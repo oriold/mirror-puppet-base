@@ -65,6 +65,22 @@ class base (
         mode   => '0644',
         source => 'puppet:///modules/base/openbsd.mk.conf',
       }
+
+      # KSH configuration
+      file { '/etc/ksh.kshrc' :
+        owner => root,
+        group => wheel,
+        mode  => '0644',
+        source => 'puppet:///modules/base/ksh.kshrc',
+      }
+
+      file { '/etc/skel/.kshrc' :
+        owner => root,
+        group => wheel,
+        mode  => '0644',
+        source => 'puppet:///modules/base/skel.kshrc',
+      }
+      
   }
 
   if $::operatingsystem == 'FreeBSD' {

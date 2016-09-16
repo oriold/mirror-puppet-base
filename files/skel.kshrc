@@ -1,0 +1,1 @@
+. /etc/ksh.kshrc
