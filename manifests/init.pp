@@ -17,7 +17,7 @@ class base (
   # Hiera
   $ssh_service = hiera('ssh_service')
   $ssl_dir     = hiera('ssl_dir')
-  
+
   # Paquetes
   if $::operatingsystem == 'OpenBSD' {
 
@@ -30,13 +30,13 @@ class base (
       include base::ntpd_server
     }
     else {
-      class { 'ntpd' :
-        settings => [
-                     "servers ${ntp_servers}",
-                     ]
-      }
+        class { 'ntpd' :
+            settings => [
+                "servers ${ntp_servers}",
+            ]
+        }
     }
-    
+
     class { 'openbsd::pkg_conf' :
       settings => {
         installpath => "http://${openbsd_mirror}/${openbsd_version}/packages/${::architecture}/",
@@ -68,19 +68,19 @@ class base (
 
       # KSH configuration
       file { '/etc/ksh.kshrc' :
-        owner => root,
-        group => wheel,
-        mode  => '0644',
+        owner  => root,
+        group  => wheel,
+        mode   => '0644',
         source => 'puppet:///modules/base/ksh.kshrc',
       }
 
       file { '/etc/skel/.kshrc' :
-        owner => root,
-        group => wheel,
-        mode  => '0644',
+        owner  => root,
+        group  => wheel,
+        mode   => '0644',
         source => 'puppet:///modules/base/skel.kshrc',
       }
-      
+
   }
 
   if $::operatingsystem == 'FreeBSD' {
@@ -92,7 +92,7 @@ class base (
     class { '::ntp' :
       servers => [ $ntp_servers ],
     }
-    
+
   }
 
   if $::operatingsystem == 'Debian' {
@@ -143,24 +143,24 @@ class base (
 
   # SSL
   file { [ '/dhparam.pem',
-           '/dhparam-4096.pem',
+      '/dhparam-4096.pem',
   ] :
-    ensure => absent,
+      ensure => absent,
   }
-  
-  file { "$ssl_dir/dhparam.pem" :
+
+  file { "${ssl_dir}/dhparam.pem" :
     owner  => root,
     group  => 0,
     mode   => '0600',
     source => 'puppet:///modules/base/dhparam.pem',
   }
 
-  file { "$ssl_dir/dhparam-4096.pem" :
+  file { "${ssl_dir}/dhparam-4096.pem" :
     owner  => root,
     group  => 0,
     mode   => '0600',
     source => 'puppet:///modules/base/dhparam-4096.pem',
   }
-  
+
 }
-  
+
