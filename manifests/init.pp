@@ -20,28 +20,51 @@ class base (
   # Paquetes
   if $::operatingsystem == 'OpenBSD' {
 
-    #Rcconf['apmd_flags'] {
-    #  value => '"-A"',
-    #}
+    service { 'apmd' :
+      ensure => running,
+    }
+
+    service { 'ntpd' :
+      ensure => running,
+    }
+    
+    file_line { 'apmd_flags' :
+      ensure => present,
+      path   => '/etc/rc.conf.local',
+      line   => 'apmd_flags="-A"',
+      match  => 'apmd_flags',
+      notify => Service['apmd'],
+    }
 
     # OpenNTPd server
     if $ntp_master {
-      include base::ntpd_server
-    }
-    else {
-        class { 'ntpd' :
-            settings => [
-                "servers ${ntp_servers}",
-            ]
-        }
+      $ntp_template = 'openbsd.ntpd_server.conf.erb'
+
+      file_line { 'ntpd_flags' :
+        ensure => present,
+        path   => '/etc/rc.conf.local',
+        line   => 'ntpd_flags="-s"',
+        match  => 'ntpd_flags',
+        notify => Service['ntpd'],
+      }
+      
+    } else {
+      $ntp_template = 'openbsd.ntpd.conf.erb'
     }
 
-    class { 'openbsd::pkg_conf' :
-      settings => {
-        installpath => "http://${openbsd_mirror}/${openbsd_version}/packages/${::architecture}/",
-        ntogo       => yes,
-        loglevel    => 1,
-      }
+    file { '/etc/ntpd.conf' :
+      owner   => root,
+      group   => wheel,
+      mode    => '0644',
+      content => template("base/${ntp_template}"),
+      notify  => Service['ntpd'],
+    }
+
+    file { '/etc/installurl' :
+      owner => root,
+      group => wheel,
+      mode  => '0644',
+      content => "http://${openbsd_mirror}",
     }
 
     file { [
