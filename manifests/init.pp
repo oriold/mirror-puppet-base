@@ -67,13 +67,11 @@ class base (
       content => "http://${openbsd_mirror}",
     }
 
-    file { [
-            '/etc/signify/mtier-59-pkg.pub',
-            ] :
+    file { '/etc/signify/mtier-60-pkg.pub' :
       owner  => root,
       group  => wheel,
       mode   => '0644',
-      source => 'puppet:///modules/base/mtier-59-pkg.pub',
+      source => 'puppet:///modules/base/mtier-60-pkg.pub',
       } ->
       package { [ $base_packages, $openbsd_packages ] :
         ensure          => installed,
