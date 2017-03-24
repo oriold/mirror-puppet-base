@@ -1,5 +1,4 @@
 # Basic module
-
 class base (
 
   $base_packages    = undef,
@@ -12,7 +11,7 @@ class base (
   $openbsd_version  = undef,
   $ssh_allow_groups = undef,
 
-) {
+  ){
 
   # Hiera
   $ssh_service = hiera('ssh_service')
