@@ -67,6 +67,13 @@ class base (
       content => "http://${openbsd_mirror}\n",
     }
 
+    file { '/etc/pkg.conf' :
+      owner => root,
+      group => wheel,
+      mode  => '0644',
+      content => "http://${openbsd_mirror}\n",
+    }
+
     file { '/etc/signify/mtier-60-pkg.pub' :
       owner  => root,
       group  => wheel,
