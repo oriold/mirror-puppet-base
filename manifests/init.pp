@@ -77,8 +77,7 @@ class base (
       source => 'puppet:///modules/base/mtier-60-pkg.pub',
       } ->
       package { [ $base_packages, $openbsd_packages ] :
-        ensure          => installed,
-        install_options => '-v',
+        ensure => installed,
       }
 
       # Ports configuration
