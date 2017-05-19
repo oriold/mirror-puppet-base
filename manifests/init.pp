@@ -43,7 +43,7 @@ class base (
       exec { 'ntpd_flags' :
         command => 'rcctl set ntpd flags -s',
         path    => '/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin',
-        notify  => Service['apmd'],
+        notify  => Service['ntpd'],
       }
       
     } else {
@@ -70,38 +70,33 @@ class base (
       target => '/etc/installurl',
     }
 
-    file { '/etc/signify/mtier-60-pkg.pub' :
+    package { [ $base_packages, $openbsd_packages ] :
+      ensure   => installed,
+      provider => openbsd,
+    }
+
+    # Ports configuration
+    file { '/etc/mk.conf' :
       owner  => root,
       group  => wheel,
       mode   => '0644',
-      source => 'puppet:///modules/base/mtier-60-pkg.pub',
-      } ->
-      package { [ $base_packages, $openbsd_packages ] :
-        ensure => installed,
-      }
+      source => 'puppet:///modules/base/openbsd.mk.conf',
+    }
 
-      # Ports configuration
-      file { '/etc/mk.conf' :
-        owner  => root,
-        group  => wheel,
-        mode   => '0644',
-        source => 'puppet:///modules/base/openbsd.mk.conf',
-      }
+    # KSH configuration
+    file { '/etc/ksh.kshrc' :
+      owner  => root,
+      group  => wheel,
+      mode   => '0644',
+      source => 'puppet:///modules/base/ksh.kshrc',
+    }
 
-      # KSH configuration
-      file { '/etc/ksh.kshrc' :
-        owner  => root,
-        group  => wheel,
-        mode   => '0644',
-        source => 'puppet:///modules/base/ksh.kshrc',
-      }
-
-      file { '/etc/skel/.kshrc' :
-        owner  => root,
-        group  => wheel,
-        mode   => '0644',
-        source => 'puppet:///modules/base/skel.kshrc',
-      }
+    file { '/etc/skel/.kshrc' :
+      owner  => root,
+      group  => wheel,
+      mode   => '0644',
+      source => 'puppet:///modules/base/skel.kshrc',
+    }
 
   }
 
