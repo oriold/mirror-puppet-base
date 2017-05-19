@@ -29,7 +29,7 @@ class base (
     }
 
     exec { 'apmd_flags' :
-      command => 'rcctl set apmd flags -A',
+      command => "rcctl set apmd flags '-A'",
       path    => '/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin',
       notify  => Service['apmd'],
     }
@@ -39,7 +39,7 @@ class base (
       $ntp_template = 'openbsd.ntpd_server.conf.erb'
 
       exec { 'ntpd_flags' :
-        command => 'rcctl set ntpd flags -s',
+        command => "rcctl set ntpd flags '-s'",
         path    => '/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin',
         notify  => Service['ntpd'],
       }
