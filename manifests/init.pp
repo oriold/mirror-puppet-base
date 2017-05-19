@@ -27,27 +27,19 @@ class base (
     service { 'ntpd' :
       ensure => running,
     }
-    
-    file_line { 'apmd_flags' :
-      ensure  => present,
-      path    => '/etc/rc.conf.local',
-      line    => 'apmd_flags="-A"',
-      match   => 'apmd_flags',
-      notify  => Service['apmd'],
-      require => File['/etc/rc.conf.local'],
+
+    exec { 'apmd_flags' :
+      command => 'rcctl set apmd flags -A',
+      path    => '/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin',
     }
 
     # OpenNTPd server
     if $ntp_master {
       $ntp_template = 'openbsd.ntpd_server.conf.erb'
 
-      file_line { 'ntpd_flags' :
-        ensure  => present,
-        path    => '/etc/rc.conf.local',
-        line    => 'ntpd_flags="-s"',
-        match   => 'ntpd_flags',
-        notify  => Service['ntpd'],
-        require => File['/etc/rc.conf.local'],
+      exec { 'ntpd_flags' :
+        command => 'rcctl set ntpd flags -s',
+        path    => '/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin',
       }
       
     } else {
