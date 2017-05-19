@@ -22,15 +22,18 @@ class base (
 
     service { 'apmd' :
       ensure => running,
+      enable => true,
     }
 
     service { 'ntpd' :
       ensure => running,
+      enable => true,
     }
 
     exec { 'apmd_flags' :
       command => 'rcctl set apmd flags -A',
       path    => '/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin',
+      notify  => Service['apmd'],
     }
 
     # OpenNTPd server
@@ -40,6 +43,7 @@ class base (
       exec { 'ntpd_flags' :
         command => 'rcctl set ntpd flags -s',
         path    => '/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin',
+        notify  => Service['apmd'],
       }
       
     } else {
