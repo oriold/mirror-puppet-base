@@ -22,12 +22,10 @@ class base (
 
     service { 'apmd' :
       ensure => running,
-      enable => true,
     }
 
     service { 'ntpd' :
       ensure => running,
-      enable => true,
     }
 
     exec { 'apmd_flags' :
@@ -71,7 +69,7 @@ class base (
     }
 
     package { [ $base_packages, $openbsd_packages ] :
-      ensure   => installed,
+      ensure   => present,
       provider => openbsd,
     }
 
@@ -102,7 +100,7 @@ class base (
 
   if $::operatingsystem == 'FreeBSD' {
     package { [ $base_packages, $freebsd_packages ] :
-      ensure => installed,
+      ensure => present,
     }
 
     # NTP
@@ -114,7 +112,7 @@ class base (
 
   if $::operatingsystem == 'Debian' {
     package { [ $base_packages, $debian_packages ] :
-      ensure => installed,
+      ensure => present,
     }
 
     # NTP
