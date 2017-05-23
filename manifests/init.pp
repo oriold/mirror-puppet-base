@@ -69,7 +69,8 @@ class base (
     }
 
     package { [ $base_packages, $openbsd_packages ] :
-      ensure   => installed,
+      ensure          => installed,
+      install_options => '-v',
     }
 
     # Ports configuration
