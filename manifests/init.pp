@@ -69,8 +69,7 @@ class base (
     }
 
     package { [ $base_packages, $openbsd_packages ] :
-      ensure   => present,
-      provider => openbsd,
+      ensure   => installed,
     }
 
     # Ports configuration
@@ -100,7 +99,7 @@ class base (
 
   if $::operatingsystem == 'FreeBSD' {
     package { [ $base_packages, $freebsd_packages ] :
-      ensure => present,
+      ensure => installed,
     }
 
     # NTP
@@ -112,7 +111,7 @@ class base (
 
   if $::operatingsystem == 'Debian' {
     package { [ $base_packages, $debian_packages ] :
-      ensure => present,
+      ensure => installed,
     }
 
     # NTP
