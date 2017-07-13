@@ -27,25 +27,21 @@ class base (
     service { 'ntpd' :
       ensure => running,
     }
-    
-    file_line { 'apmd_flags' :
-      ensure => present,
-      path   => '/etc/rc.conf.local',
-      line   => 'apmd_flags="-A"',
-      match  => 'apmd_flags',
-      notify => Service['apmd'],
+
+    exec { 'apmd_flags' :
+      command => "rcctl set apmd flags '-A'",
+      path    => '/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin',
+      notify  => Service['apmd'],
     }
 
     # OpenNTPd server
     if $ntp_master {
       $ntp_template = 'openbsd.ntpd_server.conf.erb'
 
-      file_line { 'ntpd_flags' :
-        ensure => present,
-        path   => '/etc/rc.conf.local',
-        line   => 'ntpd_flags="-s"',
-        match  => 'ntpd_flags',
-        notify => Service['ntpd'],
+      exec { 'ntpd_flags' :
+        command => "rcctl set ntpd flags '-s'",
+        path    => '/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin',
+        notify  => Service['ntpd'],
       }
       
     } else {
@@ -67,39 +63,33 @@ class base (
       content => "${openbsd_mirror}",
     }
 
-    file { '/etc/signify/mtier-60-pkg.pub' :
+    package { [ $base_packages, $openbsd_packages ] :
+      ensure          => installed,
+      install_options => '-v',
+    }
+
+    # Ports configuration
+    file { '/etc/mk.conf' :
       owner  => root,
       group  => wheel,
       mode   => '0644',
-      source => 'puppet:///modules/base/mtier-60-pkg.pub',
-      } ->
-      package { [ $base_packages, $openbsd_packages ] :
-        ensure          => installed,
-        install_options => '-v',
-      }
+      source => 'puppet:///modules/base/openbsd.mk.conf',
+    }
 
-      # Ports configuration
-      file { '/etc/mk.conf' :
-        owner  => root,
-        group  => wheel,
-        mode   => '0644',
-        source => 'puppet:///modules/base/openbsd.mk.conf',
-      }
+    # KSH configuration
+    file { '/etc/ksh.kshrc' :
+      owner  => root,
+      group  => wheel,
+      mode   => '0644',
+      source => 'puppet:///modules/base/ksh.kshrc',
+    }
 
-      # KSH configuration
-      file { '/etc/ksh.kshrc' :
-        owner  => root,
-        group  => wheel,
-        mode   => '0644',
-        source => 'puppet:///modules/base/ksh.kshrc',
-      }
-
-      file { '/etc/skel/.kshrc' :
-        owner  => root,
-        group  => wheel,
-        mode   => '0644',
-        source => 'puppet:///modules/base/skel.kshrc',
-      }
+    file { '/etc/skel/.kshrc' :
+      owner  => root,
+      group  => wheel,
+      mode   => '0644',
+      source => 'puppet:///modules/base/skel.kshrc',
+    }
 
   }
 
