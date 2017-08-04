@@ -60,7 +60,7 @@ class base (
       owner => root,
       group => wheel,
       mode  => '0644',
-      content => "${openbsd_mirror}",
+      content => "${openbsd_mirror}\n",
     }
 
     package { [ $base_packages, $openbsd_packages ] :
