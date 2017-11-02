@@ -63,6 +63,13 @@ class base (
       content => "${openbsd_mirror}\n",
     }
 
+    file { '/etc/doas.conf' :
+      owner  => root,
+      group  => wheel,
+      mode   => '0644',
+      source => 'puppet:///modules/base/openbsd.doas.conf',
+    }
+
     package { [ $base_packages, $openbsd_packages ] :
       ensure          => installed,
       install_options => '-v',
