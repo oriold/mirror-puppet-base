@@ -56,13 +56,6 @@ class base (
       notify  => Service['ntpd'],
     }
 
-    file { '/etc/doas.conf' :
-      owner  => root,
-      group  => wheel,
-      mode   => '0640',
-      source => 'puppet:///modules/base/doas.conf',
-    }
-    
     file { '/etc/installurl' :
       owner => root,
       group => wheel,
