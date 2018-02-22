@@ -11,115 +11,119 @@ class base (
   $openbsd_version  = undef,
   $ssh_allow_groups = undef,
 
-  ){
+){
 
   # Hiera
   $ssh_service = hiera('ssh_service')
   $ssl_dir     = hiera('ssl_dir')
 
   # Paquetes
-  if $::operatingsystem == 'OpenBSD' {
+  case $::operatingsystem {
+      
+    'OpenBSD': {
+      
+      service { 'apmd' :
+        ensure => running,
+      }
 
-    service { 'apmd' :
-      ensure => running,
-    }
+      service { 'ntpd' :
+        ensure => running,
+      }
 
-    service { 'ntpd' :
-      ensure => running,
-    }
-
-    exec { 'apmd_flags' :
-      command => "rcctl set apmd flags '-A'",
-      path    => '/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin',
-      notify  => Service['apmd'],
-    }
-
-    # OpenNTPd server
-    if $ntp_master {
-      $ntp_template = 'openbsd.ntpd_server.conf.erb'
-
-      exec { 'ntpd_flags' :
-        command => "rcctl set ntpd flags '-s'",
+      exec { 'apmd_flags' :
+        command => "rcctl set apmd flags '-A'",
         path    => '/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin',
+        notify  => Service['apmd'],
+      }
+
+      # OpenNTPd server
+      if $ntp_master {
+        $ntp_template = 'openbsd.ntpd_server.conf.erb'
+
+        exec { 'ntpd_flags' :
+          command => "rcctl set ntpd flags '-s'",
+          path    => '/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin',
+          notify  => Service['ntpd'],
+        }
+        
+      } else {
+        $ntp_template = 'openbsd.ntpd.conf.erb'
+      }
+
+      file { '/etc/ntpd.conf' :
+        owner   => root,
+        group   => wheel,
+        mode    => '0644',
+        content => template("base/${ntp_template}"),
         notify  => Service['ntpd'],
       }
-      
-    } else {
-      $ntp_template = 'openbsd.ntpd.conf.erb'
+
+      file { '/etc/installurl' :
+        owner => root,
+        group => wheel,
+        mode  => '0644',
+        content => "${openbsd_mirror}\n",
+      }
+
+      file { '/etc/doas.conf' :
+        owner  => root,
+        group  => wheel,
+        mode   => '0644',
+        source => 'puppet:///modules/base/OpenBSD/doas.conf',
+      }
+
+      package { [ $base_packages, $openbsd_packages ] :
+        ensure          => installed,
+        install_options => '-v',
+      }
+
+      # Ports configuration
+      file { '/etc/mk.conf' :
+        owner  => root,
+        group  => wheel,
+        mode   => '0644',
+        source => 'puppet:///modules/base/OpenBSD/mk.conf',
+      }
+
+      # KSH configuration
+      file { '/etc/ksh.kshrc' :
+        owner  => root,
+        group  => wheel,
+        mode   => '0644',
+        source => 'puppet:///modules/base/OpenBSD/ksh.kshrc',
+      }
+
+      file { '/etc/skel/.kshrc' :
+        owner  => root,
+        group  => wheel,
+        mode   => '0644',
+        source => 'puppet:///modules/base/OpenBSD/skel.kshrc',
+      }
+
     }
 
-    file { '/etc/ntpd.conf' :
-      owner   => root,
-      group   => wheel,
-      mode    => '0644',
-      content => template("base/${ntp_template}"),
-      notify  => Service['ntpd'],
+    'FreeBSD': {
+      package { [ $base_packages, $freebsd_packages ] :
+        ensure => installed,
+      }
+
+      # NTP
+      class { '::ntp' :
+        servers => [ $ntp_servers ],
+      }
+
     }
 
-    file { '/etc/installurl' :
-      owner => root,
-      group => wheel,
-      mode  => '0644',
-      content => "${openbsd_mirror}\n",
-    }
+    'Debian': {
+      package { [ $base_packages, $debian_packages ] :
+        ensure => installed,
+      }
 
-    file { '/etc/doas.conf' :
-      owner  => root,
-      group  => wheel,
-      mode   => '0644',
-      source => 'puppet:///modules/base/openbsd.doas.conf',
-    }
+      # NTP
+      class { '::ntp' :
+        servers => [ $ntp_servers ],
+      }
 
-    package { [ $base_packages, $openbsd_packages ] :
-      ensure          => installed,
-      install_options => '-v',
-    }
-
-    # Ports configuration
-    file { '/etc/mk.conf' :
-      owner  => root,
-      group  => wheel,
-      mode   => '0644',
-      source => 'puppet:///modules/base/openbsd.mk.conf',
-    }
-
-    # KSH configuration
-    file { '/etc/ksh.kshrc' :
-      owner  => root,
-      group  => wheel,
-      mode   => '0644',
-      source => 'puppet:///modules/base/ksh.kshrc',
-    }
-
-    file { '/etc/skel/.kshrc' :
-      owner  => root,
-      group  => wheel,
-      mode   => '0644',
-      source => 'puppet:///modules/base/skel.kshrc',
-    }
-
-  }
-
-  if $::operatingsystem == 'FreeBSD' {
-    package { [ $base_packages, $freebsd_packages ] :
-      ensure => installed,
-    }
-
-    # NTP
-    class { '::ntp' :
-      servers => [ $ntp_servers ],
-    }
-
-  }
-
-  if $::operatingsystem == 'Debian' {
-    package { [ $base_packages, $debian_packages ] :
-      ensure => installed,
-    }
-
-    # NTP
-    class { '::ntp' :
-      servers => [ $ntp_servers ],
     }
 
   }
@@ -159,12 +163,6 @@ class base (
   }
 
   # SSL
-  file { [ '/dhparam.pem',
-      '/dhparam-4096.pem',
-  ] :
-      ensure => absent,
-  }
-
   file { "${ssl_dir}/dhparam.pem" :
     owner  => root,
     group  => 0,
