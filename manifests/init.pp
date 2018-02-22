@@ -19,9 +19,9 @@ class base (
 
   # Paquetes
   case $::operatingsystem {
-      
+
     'OpenBSD': {
-      
+
       service { 'apmd' :
         ensure => running,
       }
@@ -38,30 +38,30 @@ class base (
 
       # OpenNTPd server
       if $ntp_master {
-        $ntp_template = 'openbsd.ntpd_server.conf.erb'
+        $ntp_template = 'ntpd_server.conf.erb'
 
         exec { 'ntpd_flags' :
           command => "rcctl set ntpd flags '-s'",
           path    => '/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin',
           notify  => Service['ntpd'],
         }
-        
+
       } else {
-        $ntp_template = 'openbsd.ntpd.conf.erb'
+        $ntp_template = 'ntpd.conf.erb'
       }
 
       file { '/etc/ntpd.conf' :
         owner   => root,
         group   => wheel,
         mode    => '0644',
-        content => template("base/${ntp_template}"),
+        content => template("base/OpenBSD/${ntp_template}"),
         notify  => Service['ntpd'],
       }
 
       file { '/etc/installurl' :
-        owner => root,
-        group => wheel,
-        mode  => '0644',
+        owner   => root,
+        group   => wheel,
+        mode    => '0644',
         content => "${openbsd_mirror}\n",
       }
 
@@ -154,8 +154,8 @@ class base (
     owner  => root,
     group  => 0,
     mode   => '0755',
-  } ->
-  file { '/etc/unbound/root.key' :
+  }
+  -> file { '/etc/unbound/root.key' :
     owner  => root,
     group  => 0,
     mode   => '0644',
