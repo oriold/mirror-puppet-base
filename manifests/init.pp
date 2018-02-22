@@ -4,6 +4,7 @@ class base (
   $base_packages    = undef,
   $debian_packages  = undef,
   $freebsd_packages = undef,
+  $kbd_lang         = 'es',
   $ntp_master       = undef,
   $ntp_servers      = undef,
   $openbsd_mirror   = undef,
@@ -100,6 +101,13 @@ class base (
         source => 'puppet:///modules/base/OpenBSD/skel.kshrc',
       }
 
+      file { '/etc/wsconsctl.conf' :
+        owner   => root,
+        group   => wheel,
+        mode    => '0644',
+        content => template('base/OpenBSD/wsconsctl.conf.erb'),
+      }
+      
     }
 
     'FreeBSD': {
