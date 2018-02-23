@@ -120,6 +120,14 @@ class base (
         servers => [ $ntp_servers ],
       }
 
+      file { '/usr/local/etc/sudoers' :
+        owner   => root,
+        group   => wheel,
+        mode    => '0440',
+        source  => 'puppet:///modules/base/FreeBSD/sudoers',
+        require => Package['sudo'],
+      }
+
     }
 
     'Debian': {
