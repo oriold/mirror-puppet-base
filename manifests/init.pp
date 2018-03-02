@@ -7,6 +7,7 @@ class base (
   $kbd_lang         = 'es',
   $ntp_master       = undef,
   $ntp_servers      = undef,
+  $openbsd_apmd     = '-A',
   $openbsd_mirror   = undef,
   $openbsd_packages = undef,
   $openbsd_version  = undef,
@@ -21,7 +22,7 @@ class base (
   # Paquetes
   case $::operatingsystem {
 
-    'OpenBSD': {
+    'OpenBSD' : {
 
       service { 'apmd' :
         ensure => running,
@@ -32,7 +33,7 @@ class base (
       }
 
       exec { 'apmd_flags' :
-        command => "rcctl set apmd flags '-A'",
+        command => "rcctl set apmd flags '${openbsd_apmd}'",
         path    => '/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin',
         notify  => Service['apmd'],
       }
@@ -107,10 +108,10 @@ class base (
         mode    => '0644',
         content => template('base/OpenBSD/wsconsctl.conf.erb'),
       }
-      
+
     }
 
-    'FreeBSD': {
+    'FreeBSD' : {
       package { [ $base_packages, $freebsd_packages ] :
         ensure => installed,
       }
@@ -130,7 +131,7 @@ class base (
 
     }
 
-    'Debian': {
+    'Debian' : {
       package { [ $base_packages, $debian_packages ] :
         ensure => installed,
       }
@@ -140,6 +141,10 @@ class base (
         servers => [ $ntp_servers ],
       }
 
+    }
+
+    default : {
+      fail("Not supported on ${::operatingsystem}")
     }
 
   }
