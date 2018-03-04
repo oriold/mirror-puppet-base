@@ -143,6 +143,18 @@ class base (
 
     }
 
+    'Ubuntu' : {
+      package { [ $base_packages, $debian_packages ] :
+        ensure => installed,
+      }
+
+      # NTP
+      class { '::ntp' :
+        servers => [ $ntp_servers ],
+      }
+
+    }
+
     default : {
       fail("Not supported on ${::operatingsystem}")
     }
