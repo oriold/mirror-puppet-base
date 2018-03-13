@@ -131,19 +131,7 @@ class base (
 
     }
 
-    'Debian' : {
-      package { [ $base_packages, $debian_packages ] :
-        ensure => installed,
-      }
-
-      # NTP
-      class { '::ntp' :
-        servers => [ $ntp_servers ],
-      }
-
-    }
-
-    'Ubuntu' : {
+    'Debian', 'Ubuntu' : {
       package { [ $base_packages, $debian_packages ] :
         ensure => installed,
       }
