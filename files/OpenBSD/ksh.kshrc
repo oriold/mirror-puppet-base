@@ -1,5 +1,4 @@
-:
-#	$OpenBSD: ksh.kshrc,v 1.27 2016/09/14 18:34:51 rpe Exp $
+#	$OpenBSD: ksh.kshrc,v 1.32 2018/05/16 14:01:41 mpf Exp $
 #
 # NAME:
 #	ksh.kshrc - global initialization for ksh
@@ -39,18 +38,18 @@ case "$-" in
 	0) PS1S='# ';;
 	esac
 	PS1S=${PS1S:-'$ '}
-	HOSTNAME=${HOSTNAME:-`uname -n`}
+	HOSTNAME=${HOSTNAME:-$(uname -n)}
 	HOST=${HOSTNAME%%.*}
 
-	#PROMPT="$USER:!$PS1S"
-	PROMPT="<$USER@$HOST:!>$PS1S"
-	#PPROMPT='$USER:$PWD:!'"$PS1S"
-	PPROMPT='<$USER@$HOST:$PWD:!>'"$PS1S"
+	PROMPT="$USER:!$PS1S"
+	#PROMPT="<$USER@$HOST:!>$PS1S"
+	PPROMPT='$USER:$PWD:!'"$PS1S"
+	#PPROMPT='<$USER@$HOST:$PWD:!>'"$PS1S"
 	PS1=$PPROMPT
 	# $TTY is the tty we logged in on,
 	# $tty is that which we are in now (might by pty)
-	tty=`tty`
-	tty=`basename $tty`
+	tty=$(tty)
+	tty=${tty##*/}
 	TTY=${TTY:-$tty}
 	# $console is the system console device
 	console=$(sysctl kern.consdev)
@@ -58,7 +57,7 @@ case "$-" in
 
 	set -o emacs
 
-	alias ls='ls -CF'
+	alias ls='ls -F'
 	alias h='fc -l | more'
 
 	case "$TERM" in
@@ -74,9 +73,7 @@ case "$-" in
 	xterm*)
 		ILS='\033]1;'; ILE='\007'
 		WLS='\033]2;'; WLE='\007'
-		if ps -p $PPID -o command | grep -q telnet; then
-			export TERM=xterms
-		fi
+		pgrep -qxs $PPID telnet && export TERM=xterms
 		;;
 	*)	;;
 	esac
@@ -117,31 +114,8 @@ case "$-" in
 	alias o='fg %-'
 	alias df='df -k'
 	alias du='du -k'
-	alias rsize='eval `resize`'
+	alias rsize='eval $(resize)'
 ;;
 *)	# non-interactive
 ;;
 esac
-# commands for both interactive and non-interactive shells
-
-# is $1 missing from $2 (or PATH) ?
-function no_path {
-	eval _v="\$${2:-PATH}"
-	case :$_v: in
-	*:$1:*) return 1;;		# no we have it
-	esac
-	return 0
-}
-# if $1 exists and is not in path, append it
-function add_path {
-	[[ -d ${1:-.} ]] && no_path $* && eval ${2:-PATH}="\$${2:-PATH}:$1"
-}
-# if $1 exists and is not in path, prepend it
-function pre_path {
-	[[ -d ${1:-.} ]] && no_path $* && eval ${2:-PATH}="$1:\$${2:-PATH}"
-}
-# if $1 is in path, remove it
-function del_path {
-	no_path $* || eval ${2:-PATH}=`eval echo :'$'${2:-PATH}: |
-		sed -e "s;:$1:;:;g" -e "s;^:;;" -e "s;:\$;;"`
-}
