@@ -88,14 +88,12 @@ class base (
       }
 
       # KSH configuration
-      file { '/etc/ksh.kshrc' :
-        owner  => root,
-        group  => wheel,
-        mode   => '0644',
-        source => 'puppet:///modules/base/OpenBSD/ksh.kshrc',
-      }
-
       file { '/etc/skel/.kshrc' :
+        ensure => absent,
+      }
+      
+      file { [ '/etc/skel/.profile',
+               '/root/.profile' ] :
         owner  => root,
         group  => wheel,
         mode   => '0644',
