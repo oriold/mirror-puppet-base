@@ -88,7 +88,8 @@ class base (
       }
 
       # KSH configuration
-      file { '/etc/skel/.kshrc' :
+      file { [ '/etc/skel/.kshrc',
+               '/root/.kshrc' ] :
         ensure => absent,
       }
       
