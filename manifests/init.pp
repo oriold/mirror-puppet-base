@@ -163,10 +163,7 @@ class base (
 
   # Dig
   file { '/etc/trusted-key.key' :
-    owner  => root,
-    group  => 0,
-    mode   => '0644',
-    source => 'puppet:///modules/base/trusted-key.key',
+    ensure => absent,
   }
 
   file { '/etc/unbound' :
