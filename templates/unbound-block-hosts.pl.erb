@@ -62,7 +62,7 @@ if (!open(FILE, '>'.$opt->{'file'})) {
 my $host;
 my @blockedhosts;
 foreach my $line (split("\n", $res->content)) {
-    if ( $line =~ m/(127\.0\.0\.1)(\s+)([A-Za-z0-9\-\.]+)/ ) {
+    if ( $line =~ m/(127\.0\.0\.1)(\s+)([A-Za-z0-9_\-\.]+)/ ) {
 
 	$host = $3;
 	push(@blockedhosts, $host);
