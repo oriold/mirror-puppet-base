@@ -10,8 +10,8 @@ class base (
   $openbsd_apmd     = '-A',
   $openbsd_mirror   = undef,
   $openbsd_packages = undef,
-  $openbsd_version  = undef,
   $ssh_allow_groups = undef,
+  $unbound_path     = undef,
 
 ){
 
@@ -23,6 +23,8 @@ class base (
   case $::operatingsystem {
 
     'OpenBSD' : {
+
+      $unbound_path = '/var/unbound/etc'
 
       service { 'apmd' :
         ensure => running,
@@ -120,6 +122,8 @@ class base (
         servers => [ $ntp_servers ],
       }
 
+      $unbound_path = '/usr/local/etc/unbound'
+
       file { '/usr/local/etc/sudoers' :
         owner   => root,
         group   => wheel,
@@ -177,6 +181,13 @@ class base (
     group  => 0,
     mode   => '0644',
     source => 'puppet:///modules/base/unbound.root.key',
+  }
+
+  file { '/usr/local/bin/unbound-block-hosts.pl' :
+    owner   => root,
+    group   => 0,
+    mode    => '0755',
+    content => template('base/unbound-block-hosts.pl.erb'),
   }
 
   # SSL
