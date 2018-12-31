@@ -11,7 +11,6 @@ class base (
   $openbsd_mirror   = undef,
   $openbsd_packages = undef,
   $ssh_allow_groups = undef,
-  $unbound_path     = undef,
 
 ){
 
