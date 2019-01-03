@@ -74,6 +74,7 @@ sub uniq {
     grep !$seen{$_}++, @_;
 }
 
+@blockedhosts = sort(@blockedhosts);
 my @blockedhosts_uniq = uniq(@blockedhosts);
 
 map {
