@@ -69,10 +69,17 @@ foreach my $line (split("\n", $res->content)) {
     }
 }
 
+sub uniq {
+    my %seen;
+    grep !$seen{$_}++, @_;
+}
+
+my @blockedhosts_uniq = uniq(@blockedhosts);
+
 map {
     printf(FILE "local-data: \"%s A %s\"\n", $_, $opt->{'address'});
     printf(FILE "local-data: \"%s AAAA %s\"\n", $_, $opt->{'v6address'});
-} @blockedhosts;
+} @blockedhosts_uniq;
 
 close(FILE);
 
