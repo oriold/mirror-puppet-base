@@ -75,6 +75,13 @@ class base (
         source => 'puppet:///modules/base/OpenBSD/doas.conf',
       }
 
+      file { '/etc/iked/pubkeys/fqdn/gtw-2.the-grid.xyz' :
+        owner  => root,
+        group  => wheel,
+        mode   => '0644',
+        source => 'puppet:///modules/base/OpenBSD/gtw-2.the-grid.xyz',
+      }
+
       package { [ $base_packages, $openbsd_packages ] :
         ensure          => installed,
       }
