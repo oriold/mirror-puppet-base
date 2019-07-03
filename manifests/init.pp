@@ -171,21 +171,11 @@ class base (
   }
 
   # Dig
-  file { '/etc/trusted-key.key' :
-    ensure => absent,
-  }
-
   file { '/etc/unbound' :
     ensure => directory,
     owner  => root,
     group  => 0,
     mode   => '0755',
-  }
-  -> file { '/etc/unbound/root.key' :
-    owner  => root,
-    group  => 0,
-    mode   => '0644',
-    source => 'puppet:///modules/base/unbound.root.key',
   }
 
   file { '/usr/local/bin/unbound-block-hosts.pl' :
