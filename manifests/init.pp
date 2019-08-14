@@ -82,6 +82,13 @@ class base (
         source => 'puppet:///modules/base/OpenBSD/gtw-2.the-grid.xyz',
       }
 
+      file { '/etc/sysclean.ignore' :
+        owner  => root,
+        group  => wheel,
+        mode   => '0644',
+        source => 'puppet:///modules/base/OpenBSD/sysclean.ignore',
+      }
+
       package { [ $base_packages, $openbsd_packages ] :
         ensure          => installed,
       }

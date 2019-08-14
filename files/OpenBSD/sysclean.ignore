@@ -1,0 +1,12 @@
+/var/unbound
+/var/spool/cups
+/var/yp
+/var/lost+found
+/etc/X0.hosts
+/etc/mixerctl.conf
+/etc/unwind.block
+/etc/iked
+/etc/mail/secrets
+/etc/mail/secrets.db
+/etc/ssl
+/mnt
