@@ -3,10 +3,14 @@
 /var/yp
 /var/lost+found
 /etc/X0.hosts
+/etc/X11
 /etc/mixerctl.conf
 /etc/unwind.block
 /etc/iked
 /etc/mail/secrets
 /etc/mail/secrets.db
+/etc/unbound
+/etc/monit.d
+/etc/openvpn
 /etc/ssl
 /mnt
