@@ -19,7 +19,7 @@ class base (
   $ssl_dir     = hiera('ssl_dir')
 
   # Paquetes
-  case $::operatingsystem {
+  case $facts['os']['family'] {
 
     'OpenBSD' : {
 
@@ -142,6 +142,13 @@ class base (
         mode    => '0440',
         source  => 'puppet:///modules/base/FreeBSD/sudoers',
         require => Package['sudo'],
+      }
+
+      file { '/etc/make.conf' :
+        owner  => root,
+        group  => wheel,
+        mode   => '0644',
+        source => 'puppet:///modules/base/FreeBSD/make.conf',
       }
 
     }
