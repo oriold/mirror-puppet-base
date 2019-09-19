@@ -13,4 +13,5 @@
 /etc/monit.d
 /etc/openvpn
 /etc/ssl
+/etc/group.bak
 /mnt
