@@ -2,14 +2,12 @@
 class base (
 
   $base_packages    = undef,
-  $debian_packages  = undef,
-  $freebsd_packages = undef,
   $kbd_lang         = 'es',
+  $os_packages      = undef,
   $ntp_master       = undef,
   $ntp_servers      = undef,
   $openbsd_apmd     = '-A',
   $openbsd_mirror   = undef,
-  $openbsd_packages = undef,
   $ssh_allow_groups = undef,
 
 ){
@@ -89,7 +87,7 @@ class base (
         source => 'puppet:///modules/base/OpenBSD/sysclean.ignore',
       }
 
-      package { [ $base_packages, $openbsd_packages ] :
+      package { [ $base_packages, $local_packages ] :
         ensure          => installed,
       }
 
@@ -125,7 +123,7 @@ class base (
     }
 
     'FreeBSD' : {
-      package { [ $base_packages, $freebsd_packages ] :
+      package { [ $base_packages, $local_packages ] :
         ensure => installed,
       }
 
@@ -154,7 +152,19 @@ class base (
     }
 
     'Debian', 'Ubuntu' : {
-      package { [ $base_packages, $debian_packages ] :
+      package { [ $base_packages, $local_packages ] :
+        ensure => installed,
+      }
+
+      # NTP
+      class { '::ntp' :
+        servers => [ $ntp_servers ],
+      }
+
+    }
+
+    'Archlinux' : {
+      package { [ $base_packages, $local_packages ] :
         ensure => installed,
       }
 
@@ -182,14 +192,6 @@ class base (
     mode    => '0644',
     content => template('base/sshd_config.erb'),
     notify  => Service[$ssh_service],
-  }
-
-  # Dig
-  file { '/etc/unbound' :
-    ensure => directory,
-    owner  => root,
-    group  => 0,
-    mode   => '0755',
   }
 
   file { '/usr/local/bin/unbound-block-hosts.pl' :
