@@ -17,6 +17,10 @@ class base (
   $ssl_dir     = hiera('ssl_dir')
 
   # Paquetes
+  package { $base_packages :
+    ensure => installed,
+  }
+  
   case $facts['os']['family'] {
 
     'OpenBSD' : {
@@ -87,8 +91,8 @@ class base (
         source => 'puppet:///modules/base/OpenBSD/sysclean.ignore',
       }
 
-      package { [ $base_packages, $local_packages ] :
-        ensure          => installed,
+      package { $local_packages :
+        ensure => installed,
       }
 
       # Ports configuration
@@ -123,7 +127,7 @@ class base (
     }
 
     'FreeBSD' : {
-      package { [ $base_packages, $local_packages ] :
+      package { $local_packages :
         ensure => installed,
       }
 
@@ -152,7 +156,7 @@ class base (
     }
 
     'Debian', 'Ubuntu' : {
-      package { [ $base_packages, $local_packages ] :
+      package { $local_packages :
         ensure => installed,
       }
 
@@ -164,7 +168,7 @@ class base (
     }
 
     'Archlinux' : {
-      package { [ $base_packages, $local_packages ] :
+      package { $local_packages :
         ensure => installed,
       }
 
@@ -176,7 +180,7 @@ class base (
     }
 
     default : {
-      fail("Not supported on ${::operatingsystem}")
+      fail("Not supported on $facts['os']['family']")
     }
 
   }
