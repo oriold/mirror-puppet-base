@@ -3,7 +3,7 @@ class base (
 
   $base_packages    = undef,
   $kbd_lang         = 'es',
-  $os_packages      = undef,
+  $local_packages   = undef,
   $ntp_master       = undef,
   $ntp_servers      = undef,
   $openbsd_apmd     = '-A',
