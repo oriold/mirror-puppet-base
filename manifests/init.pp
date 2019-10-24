@@ -17,7 +17,7 @@ class base (
   $ssl_dir     = hiera('ssl_dir')
 
   # Paquetes
-  package { $base_packages :
+  package { [ $base_packages, $local_packages ] :
     ensure => installed,
   }
   
@@ -91,10 +91,6 @@ class base (
         source => 'puppet:///modules/base/OpenBSD/sysclean.ignore',
       }
 
-      package { $local_packages :
-        ensure => installed,
-      }
-
       # Ports configuration
       file { '/etc/mk.conf' :
         owner  => root,
@@ -127,10 +123,6 @@ class base (
     }
 
     'FreeBSD' : {
-      package { $local_packages :
-        ensure => installed,
-      }
-
       # NTP
       class { '::ntp' :
         servers => [ $ntp_servers ],
@@ -156,10 +148,6 @@ class base (
     }
 
     'Debian', 'Ubuntu' : {
-      package { $local_packages :
-        ensure => installed,
-      }
-
       # NTP
       class { '::ntp' :
         servers => [ $ntp_servers ],
@@ -168,10 +156,6 @@ class base (
     }
 
     'Archlinux' : {
-      package { $local_packages :
-        ensure => installed,
-      }
-
       # NTP
       class { '::ntp' :
         servers => [ $ntp_servers ],
