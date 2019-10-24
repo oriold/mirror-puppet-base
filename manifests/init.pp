@@ -156,11 +156,21 @@ class base (
     }
 
     'Archlinux' : {
-      # NTP
-      class { '::ntp' :
-        servers => [ $ntp_servers ],
+
+      file { '/etc/vconsole.conf' :
+        owner   => root,
+        group   => root,
+        mode    => '0644',
+        content => template('base/Archlinux/vconsole.conf.erb'),
       }
 
+      file { '/etc/locale.conf' :
+        owner  => root,
+        group  => root,
+        mode   => '0644',
+        source => 'puppet:///modules/base/Archlinux/locale.conf',
+      }
+                            
     }
 
     default : {
