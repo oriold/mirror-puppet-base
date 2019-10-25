@@ -157,6 +157,17 @@ class base (
 
     'Archlinux' : {
 
+      package { 'cronie' :
+        ensure => installed,
+      }
+
+      service { 'cronie' :
+        ensure  => running,
+        enable  => true,
+        require => Package['cronie'],
+      }
+      
+      
       file { '/etc/vconsole.conf' :
         owner   => root,
         group   => root,
