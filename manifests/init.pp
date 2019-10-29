@@ -173,6 +173,13 @@ class base (
         mode   => '0644',
         source => 'puppet:///modules/base/Archlinux/pacman.conf',
       }
+      ->
+      file { '/etc/pacman.d/mirrorlist' :
+        owner  => root,
+        group  => root,
+        mode   => '0644',
+        source => 'puppet:///modules/base/Archlinux/mirrorlist',
+      }
       
       file { '/etc/vconsole.conf' :
         owner   => root,
