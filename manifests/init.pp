@@ -166,7 +166,13 @@ class base (
         enable  => true,
         require => Package['cronie'],
       }
-      
+
+      file { '/etc/pacman.conf' :
+        owner  => root,
+        group  => root,
+        mode   => '0644',
+        source => 'puppet:///modules/base/Archlinux/pacman.conf',
+      }
       
       file { '/etc/vconsole.conf' :
         owner   => root,
