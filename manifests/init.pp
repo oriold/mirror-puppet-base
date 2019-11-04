@@ -194,6 +194,21 @@ class base (
         mode   => '0644',
         source => 'puppet:///modules/base/Archlinux/locale.conf',
       }
+
+      # AUR
+      file { '/home/aur' :
+        ensure => directory,
+        owner  => root,
+        group  => wheel,
+        mode   => '0775'
+      }
+      ->
+      file { '/home/aur/custompkgs' :
+        ensure => directory,
+        owner  => root,
+        group  => wheel,
+        mode   => '0775'
+      }
                             
     }
 
