@@ -156,7 +156,9 @@ class base (
     }
 
     'Archlinux' : {
-
+      
+      $unbound_path = '/etc/unbound'
+      
       package { 'cronie' :
         ensure => installed,
       }
