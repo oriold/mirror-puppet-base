@@ -211,6 +211,13 @@ class base (
         group  => wheel,
         mode   => '0775'
       }
+      ->
+      file { '/home/aur/pkgs' :
+        ensure => directory,
+        owner  => root,
+        group  => wheel,
+        mode   => '0775'
+      }
                             
     }
 
