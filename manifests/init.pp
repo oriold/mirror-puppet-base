@@ -209,6 +209,7 @@ class base (
       exec { 'create_aur_repo' :
         command => 'repo-add /home/aur/custompkgs/custom.db.tar',
         creates => '/home/aur/custompkgs/custom.db.tar',
+        cwd     => '/home/aur/custompkgs',
         require => File['/home/aur/custompkgs'],
       }
 
