@@ -13,6 +13,7 @@ class base (
 ){
 
   # Hiera
+  $local_user  = hiera('desktop::local_user')
   $ssh_service = hiera('ssh_service')
   $ssl_dir     = hiera('ssl_dir')
 
@@ -169,20 +170,6 @@ class base (
         require => Package['cronie'],
       }
 
-      file { '/etc/pacman.conf' :
-        owner  => root,
-        group  => root,
-        mode   => '0644',
-        source => 'puppet:///modules/base/Archlinux/pacman.conf',
-      }
-      ->
-      file { '/etc/pacman.d/mirrorlist' :
-        owner  => root,
-        group  => root,
-        mode   => '0644',
-        source => 'puppet:///modules/base/Archlinux/mirrorlist',
-      }
-      
       file { '/etc/vconsole.conf' :
         owner   => root,
         group   => root,
@@ -197,26 +184,53 @@ class base (
         source => 'puppet:///modules/base/Archlinux/locale.conf',
       }
 
-      # AUR
+      # Pacman
       file { '/home/aur' :
         ensure => directory,
-        owner  => root,
-        group  => wheel,
-        mode   => '0775'
+        owner  => $local_user,
+        group  => $local_user,
+        mode   => '0755'
       }
       ->
       file { '/home/aur/custompkgs' :
         ensure => directory,
-        owner  => root,
-        group  => wheel,
-        mode   => '0775'
+        owner  => $local_user,
+        group  => $local_user,
+        mode   => '0755'
       }
       ->
       file { '/home/aur/pkgs' :
         ensure => directory,
+        owner  => $local_user,
+        group  => $local_user,
+        mode   => '0755'
+      }
+
+      exec { 'create_aur_repo' :
+        command => 'repo-add /home/aur/custompkgs/custom.db.tar',
+        creates => '/home/aur/custompkgs/custom.db.tar',
+        require => File['/home/aur/custompkgs'],
+      }
+
+      file { '/home/aur/custompkgs/custom.db.tar' :
+        owner => $local_user,
+        group => $local_user,
+        mode  => '0644',
+      }
+      
+      file { '/etc/pacman.conf' :
+        owner   => root,
+        group   => root,
+        mode    => '0644',
+        source  => 'puppet:///modules/base/Archlinux/pacman.conf',
+        require => File['/home/aur/custompkgs/custom.db.tar'],
+      }
+      ->
+      file { '/etc/pacman.d/mirrorlist' :
         owner  => root,
-        group  => wheel,
-        mode   => '0775'
+        group  => root,
+        mode   => '0644',
+        source => 'puppet:///modules/base/Archlinux/mirrorlist',
       }
                             
     }
