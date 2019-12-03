@@ -164,7 +164,7 @@ class base (
         ensure => installed,
       }
 
-      service { 'ntpd' :
+      service { 'openntpd' :
         ensure  => running,
         enable  => true,
         require => Package['openntpd'],
@@ -175,7 +175,7 @@ class base (
         group   => root,
         mode    => '0644',
         content => template('base/ntpd.conf.erb'),
-        notify  => Service['ntpd'],
+        notify  => Service['openntpd'],
       }
       
       file { '/etc/vconsole.conf' :
