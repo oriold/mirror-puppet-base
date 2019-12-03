@@ -30,10 +30,12 @@ class base (
 
       service { 'apmd' :
         ensure => running,
+        enable => true,
       }
 
       service { 'ntpd' :
         ensure => running,
+        enable => true,
       }
 
       exec { 'apmd_flags' :
@@ -43,17 +45,11 @@ class base (
       }
 
       # OpenNTPd server
-      if $ntp_master {
-        $ntp_template = 'ntpd_server.conf.erb'
-      } else {
-        $ntp_template = 'ntpd.conf.erb'
-      }
-
       file { '/etc/ntpd.conf' :
         owner   => root,
         group   => wheel,
         mode    => '0644',
-        content => template("base/OpenBSD/${ntp_template}"),
+        content => template("base/ntpd.conf.erb"),
         notify  => Service['ntpd'],
       }
 

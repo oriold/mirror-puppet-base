@@ -1,0 +1,5 @@
+<% if @ntp_master -%>
+listen on *
+<% end -%>
+
+servers <%= @ntp_servers %>
