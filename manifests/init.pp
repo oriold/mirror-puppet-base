@@ -44,13 +44,6 @@ class base (
       # OpenNTPd server
       if $ntp_master {
         $ntp_template = 'ntpd_server.conf.erb'
-
-        exec { 'ntpd_flags' :
-          command => "rcctl set ntpd flags '-s'",
-          path    => '/usr/local/bin:/usr/bin:/bin:/sbin:/usr/sbin',
-          notify  => Service['ntpd'],
-        }
-
       } else {
         $ntp_template = 'ntpd.conf.erb'
       }
