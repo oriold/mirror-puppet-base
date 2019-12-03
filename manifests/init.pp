@@ -5,7 +5,8 @@ class base (
   $kbd_lang         = 'es',
   $local_packages   = undef,
   $ntp_master       = undef,
-  $ntp_servers      = undef,
+  $ntp_sensors      = true,
+  $ntp_servers      = 'time.cloudflare.com',
   $openbsd_apmd     = '-A',
   $openbsd_mirror   = undef,
   $ssh_allow_groups = undef,
@@ -49,7 +50,7 @@ class base (
         owner   => root,
         group   => wheel,
         mode    => '0644',
-        content => template("base/ntpd.conf.erb"),
+        content => template('base/ntpd.conf.erb'),
         notify  => Service['ntpd'],
       }
 
@@ -159,6 +160,24 @@ class base (
         require => Package['cronie'],
       }
 
+      package { 'openntpd' :
+        ensure => installed,
+      }
+
+      service { 'ntpd' :
+        ensure  => running,
+        enable  => true,
+        require => Package['openntpd'],
+      }
+
+      file { '/etc/ntpd.conf' :
+        owner   => root,
+        group   => root,
+        mode    => '0644',
+        content => template('base/ntpd.conf.erb'),
+        notify  => Service['ntpd'],
+      }
+      
       file { '/etc/vconsole.conf' :
         owner   => root,
         group   => root,

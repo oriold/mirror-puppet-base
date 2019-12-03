@@ -2,4 +2,8 @@
 listen on *
 <% end -%>
 
+<% if @ntp_sensors -%>
+sensor *
+<% end -%>
+
 servers <%= @ntp_servers %>
