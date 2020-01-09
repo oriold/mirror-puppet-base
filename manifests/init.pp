@@ -241,6 +241,14 @@ class base (
         mode   => '0644',
         source => 'puppet:///modules/base/Archlinux/mirrorlist',
       }
+      ->
+      file { '/etc/pacman.d/options' :
+        owner   => root,
+        group   => root,
+        mode    => '0644',
+        content => '',
+        replace => false,
+      }
                             
     }
 
