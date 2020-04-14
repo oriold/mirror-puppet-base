@@ -10,6 +10,8 @@ class base (
   $openbsd_apmd     = '-A',
   $openbsd_mirror   = undef,
   $ssh_allow_groups = undef,
+  $vault_addr       = undef,
+  $vault_token      = undef,
 
 ){
 
@@ -111,6 +113,30 @@ class base (
         content => template('base/OpenBSD/wsconsctl.conf.erb'),
       }
 
+      # Profile directory
+      file { '/etc/profile' :
+        owner  => root,
+        group  => wheel,
+        mode   => '0644',
+        source => 'puppet:///modules/base/OpenBSD/profile',
+      }
+
+      file { '/etc/profile.d' :
+        ensure => directory,
+        owner  => root,
+        group  => wheel,
+        mode   => '0755',
+      }
+
+      # Vault
+      file { '/etc/profile.d/local-vault.sh' :
+        owner   => root,
+        group   => wheel,
+        mode    => '0644',
+        content => template('base/local-vault.sh.erb'),
+        require => File['/etc/profile.d'],
+      }
+
     }
 
     'FreeBSD' : {
@@ -136,12 +162,44 @@ class base (
         source => 'puppet:///modules/base/FreeBSD/make.conf',
       }
 
+      # Profile directory
+      file { '/etc/profile' :
+        owner  => root,
+        group  => wheel,
+        mode   => '0644',
+        source => 'puppet:///modules/base/FreeBSD/profile',
+      }
+
+      file { '/usr/local/etc/profile.d' :
+        ensure => directory,
+        owner  => root,
+        group  => wheel,
+        mode   => '0755',
+      }
+
+      # Vault
+      file { '/usr/local/etc/profile.d/local-vault.sh' :
+        owner   => root,
+        group   => wheel,
+        mode    => '0644',
+        content => template('base/local-vault.sh.erb'),
+        require => File['/usr/local/etc/profile.d'],
+      }
+
     }
 
     'Debian', 'Ubuntu' : {
       # NTP
       class { '::ntp' :
         servers => [ $ntp_servers ],
+      }
+
+      # Vault
+      file { '/etc/profile.d/local-vault.sh' :
+        owner   => root,
+        group   => wheel,
+        mode    => '0644',
+        content => template('base/local-vault.sh.erb'),
       }
 
     }
@@ -248,6 +306,14 @@ class base (
         mode    => '0644',
         content => '',
         replace => false,
+      }
+
+      # Vault
+      file { '/etc/profile.d/local-vault.sh' :
+        owner   => root,
+        group   => wheel,
+        mode    => '0644',
+        content => template('base/local-vault.sh.erb'),
       }
                             
     }
