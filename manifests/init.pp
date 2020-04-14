@@ -197,7 +197,7 @@ class base (
       # Vault
       file { '/etc/profile.d/local-vault.sh' :
         owner   => root,
-        group   => wheel,
+        group   => root,
         mode    => '0644',
         content => template('base/local-vault.sh.erb'),
       }
