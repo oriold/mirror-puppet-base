@@ -113,6 +113,31 @@ class base (
         content => template('base/OpenBSD/wsconsctl.conf.erb'),
       }
 
+      # Some file permissions
+      file { '/etc/iked.conf' :
+        owner   => root,
+        group   => wheel,
+        mode    => '0600',
+        replace => false,
+        source  => 'puppet:///modules/base/OpenBSD/iked.conf.sample',
+      }
+      
+      file { '/etc/mail/secrets' :
+        owner   => root,
+        group   => wheel,
+        mode    => '0640',
+        replace => false,
+        content => "Managed from puppet\n",
+      }
+      
+      file { '/etc/mail/secrets.db' :
+        owner   => root,
+        group   => wheel,
+        mode    => '0640',
+        replace => false,
+        content => "Managed from puppet\n",
+      }
+
       # Profile directory
       file { '/etc/profile' :
         owner  => root,
