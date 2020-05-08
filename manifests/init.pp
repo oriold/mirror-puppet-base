@@ -153,6 +153,13 @@ class base (
         mode   => '0755',
       }
 
+      file { '/var/db/geoip' :
+        ensure => directory,
+        owner  => root,
+        group  => wheel,
+        mode   => '0755',
+      }
+
       # Vault
       file { '/etc/profile.d/local-vault.sh' :
         owner   => root,
@@ -202,6 +209,13 @@ class base (
         mode   => '0755',
       }
 
+      file { '/var/db/geoip' :
+        ensure => directory,
+        owner  => root,
+        group  => wheel,
+        mode   => '0755',
+      }
+
       # Vault
       file { '/usr/local/etc/profile.d/local-vault.sh' :
         owner   => root,
@@ -217,6 +231,36 @@ class base (
       # NTP
       class { '::ntp' :
         servers => [ $ntp_servers ],
+      }
+
+      # GeoIP
+      file { '/var/db' :
+        ensure => directory,
+        owner  => root,
+        group  => root,
+        mode   => '0755',
+      }
+      ->
+      file { '/var/db/geoip' :
+        ensure => directory,
+        owner  => root,
+        group  => root,
+        mode   => '0755',
+      }
+      
+      # GeoIP
+      file { '/var/db' :
+        ensure => directory,
+        owner  => root,
+        group  => root,
+        mode   => '0755',
+      }
+      ->
+      file { '/var/db/geoip' :
+        ensure => directory,
+        owner  => root,
+        group  => root,
+        mode   => '0755',
       }
 
       # Vault
@@ -333,6 +377,13 @@ class base (
         replace => false,
       }
 
+      file { '/var/db/geoip' :
+        ensure => directory,
+        owner  => root,
+        group  => root,
+        mode   => '0755',
+      }
+
       # Vault
       file { '/etc/profile.d/local-vault.sh' :
         owner   => root,
@@ -382,6 +433,23 @@ class base (
     group  => 0,
     mode   => '0600',
     source => 'puppet:///modules/base/dhparam-4096.pem',
+  }
+
+  # GeoIP
+  file { '/usr/local/bin/update-geoip.sh' :
+    owner  => root,
+    group  => 0,
+    mode   => '0755',
+    source => 'puppet:///modules/base/update-geoip.sh',
+  }
+
+  cron { 'update-geoip' :
+    ensure  => present,
+    command => "/usr/local/bin/update-geoip.sh > /dev/null 2>&1",
+    user    => root,
+    minute  => fqdn_rand(60),
+    hour    => 11,
+    require => File['/usr/local/bin/update-geoip.sh'],
   }
 
 }
