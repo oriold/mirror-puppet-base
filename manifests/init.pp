@@ -247,21 +247,6 @@ class base (
         group  => root,
         mode   => '0755',
       }
-      
-      # GeoIP
-      file { '/var/db' :
-        ensure => directory,
-        owner  => root,
-        group  => root,
-        mode   => '0755',
-      }
-      ->
-      file { '/var/db/geoip' :
-        ensure => directory,
-        owner  => root,
-        group  => root,
-        mode   => '0755',
-      }
 
       # Vault
       file { '/etc/profile.d/local-vault.sh' :
