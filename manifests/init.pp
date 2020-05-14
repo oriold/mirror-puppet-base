@@ -124,7 +124,7 @@ class base (
       
       file { '/etc/mail/secrets' :
         owner   => root,
-        group   => wheel,
+        group   => _smtpd,
         mode    => '0640',
         replace => false,
         content => "Managed from puppet\n",
@@ -132,7 +132,7 @@ class base (
       
       file { '/etc/mail/secrets.db' :
         owner   => root,
-        group   => wheel,
+        group   => _smtpd,
         mode    => '0640',
         replace => false,
         content => "Managed from puppet\n",
