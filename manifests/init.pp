@@ -437,5 +437,13 @@ class base (
     require => File['/usr/local/bin/update-geoip.sh'],
   }
 
+  # motd
+  file { '/etc/motd':
+    owner  => root,
+    group  => 0,
+    mode   => '0644',
+    source => 'puppet:///modules/base/motd',
+  }
+  
 }
 
