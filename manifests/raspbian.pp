@@ -5,7 +5,7 @@ class base::raspbian (
 
 ){
 
-  package { [ "update-notifier-common", "unattended-upgrades" ] :
+  package { "unattended-upgrades" :
     ensure => installed,
   }
 
