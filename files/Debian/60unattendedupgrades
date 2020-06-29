@@ -1,4 +1,0 @@
-
-// Managed by puppet
-Unattended-Upgrade::Mail "servers@the-grid.xyz";
-Unattended-Upgrade::Automatic-Reboot "true";
