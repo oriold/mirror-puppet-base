@@ -22,5 +22,12 @@ class base::raspbian (
     mode   => '0644',
     source => 'puppet:///modules/base/Raspbian/50unattendedupgrades',
   }
+
+  file { "/etc/sudoers" :
+    owner  => root,
+    group  => root,
+    mode   => '0440',
+    source => 'puppet:///modules/base/Raspbian/sudoers',
+  }
   
 }
