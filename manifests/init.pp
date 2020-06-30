@@ -256,6 +256,15 @@ class base (
         content => template('base/local-vault.sh.erb'),
       }
 
+      if $facts['os']['hardware'] == 'x86_64' {
+        file { "/usr/local/bin/vault" :
+          owner => root,
+          group => root,
+          mode  => '0755',
+          source => 'puppet:///modules/base/Debian/vault',
+        }
+      }
+ 
     }
 
     'Archlinux' : {
