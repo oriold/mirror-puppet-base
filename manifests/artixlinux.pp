@@ -3,30 +3,31 @@
 class base::artixlinux (
 
 ) inherits base {
-
-  Package { provider => 'pacman' }
-  Service { provider => 'openrc' }
   
   $unbound_path = '/etc/unbound'
   
   package { 'cronie-openrc' :
     ensure   => installed,
+    provider => 'pacman',
   }
 
   service { 'cronie' :
-    ensure  => running,
-    enable  => true,
-    require => Package['cronie-openrc'],
+    ensure   => running,
+    enable   => true,
+    provider => 'openrc',
+    require  => Package['cronie-openrc'],
   }
 
   package { 'openntpd-openrc' :
-    ensure => installed,
+    ensure   => installed,
+    provider => 'pacman',
   }
 
   service { 'openntpd' :
-    ensure  => running,
-    enable  => true,
-    require => Package['openntpd-openrc'],
+    ensure   => running,
+    enable   => true,
+    provider => 'openrc',
+    require  => Package['openntpd-openrc'],
   }
 
   file { '/etc/ntpd.conf' :
@@ -136,11 +137,13 @@ class base::artixlinux (
 
   # SSH
   package { 'openssh-openrc':
-    ensure => present,
+    ensure   => present,
+    provider => 'pacman',
   }
   
   service { $ssh_service :
-    ensure => running,
+    ensure   => running,
+    provider => 'openrc',
   }
 
 }  
