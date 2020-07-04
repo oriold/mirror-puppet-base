@@ -10,6 +10,7 @@ class base (
   $openbsd_apmd     = '-A',
   $openbsd_mirror   = undef,
   $ssh_allow_groups = undef,
+  $unbound_path     = undef,
   $vault_addr       = undef,
   $vault_token      = undef,
 

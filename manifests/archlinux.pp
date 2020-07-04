@@ -4,8 +4,6 @@ class base::archlinux (
 
 ) inherits base {
 
-  $unbound_path = '/etc/unbound'
-
   # Paquetes
   package { [ $base_packages, $local_packages ] :
     ensure => installed,

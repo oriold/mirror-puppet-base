@@ -4,8 +4,6 @@ class base::openbsd (
 
 ) inherits base {
 
-  $unbound_path = '/var/unbound/etc'
-
   # Paquetes
   package { [ $base_packages, $local_packages ] :
     ensure => installed,

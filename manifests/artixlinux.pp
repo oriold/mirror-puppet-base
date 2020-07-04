@@ -6,8 +6,6 @@ class base::artixlinux (
 
   Package { provider => 'pacman' }
   Service { provider => 'openrc' }
-  
-  $unbound_path = '/etc/unbound'
 
   # Paquetes
   package { [ $base_packages, $local_packages ] :

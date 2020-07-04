@@ -14,8 +14,6 @@ class base::freebsd (
     servers => [ $ntp_servers ],
   }
 
-  $unbound_path = '/usr/local/etc/unbound'
-
   file { '/usr/local/etc/sudoers' :
     owner   => root,
     group   => wheel,
