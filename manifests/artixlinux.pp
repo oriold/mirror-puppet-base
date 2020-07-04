@@ -8,6 +8,11 @@ class base::artixlinux (
   Service { provider => 'openrc' }
   
   $unbound_path = '/etc/unbound'
+
+  # Paquetes
+  package { [ $base_packages, $local_packages ] :
+    ensure => installed,
+  }
   
   package { 'cronie-openrc' :
     ensure   => installed,
@@ -93,7 +98,7 @@ class base::artixlinux (
     owner   => root,
     group   => root,
     mode    => '0644',
-    source  => 'puppet:///modules/base/Artix/pacman.conf',
+    source  => 'puppet:///modules/base/Artixlinux/pacman.conf',
     require => File['/home/aur/custompkgs/custom.db.tar'],
   }
   ->

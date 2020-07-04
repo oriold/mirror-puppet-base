@@ -4,6 +4,11 @@ class base::freebsd (
 
 ) inherits base {
 
+  # Paquetes
+  package { [ $base_packages, $local_packages ] :
+    ensure => installed,
+  }
+
   # NTP
   class { '::ntp' :
     servers => [ $ntp_servers ],

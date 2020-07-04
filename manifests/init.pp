@@ -20,11 +20,6 @@ class base (
   $ssh_service = hiera('ssh_service')
   $ssl_dir     = hiera('ssl_dir')
 
-  # Paquetes
-  package { [ $base_packages, $local_packages ] :
-    ensure => installed,
-  }
-
   file { '/etc/ssh/sshd_config' :
     owner   => root,
     group   => 0,
