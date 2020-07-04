@@ -1,0 +1,14 @@
+##
+## Artix Linux repository mirrorlist
+## Generated on 2020-06-14
+##
+
+# Artix mirrors
+
+Server = https://mirrors.dotsrc.org/artix-linux/repos/$repo/os/$arch
+Server = http://ftp.ntua.gr/pub/linux/artix-linux/$repo/os/$arch
+Server = https://ftp.cc.uoc.gr/mirrors/linux/artixlinux/$repo/os/$arch
+Server = https://artix.rw-net.de/repos/$repo/os/$arch
+Server = https://ftp.sh.cvut.cz/artix-linux/$repo/os/$arch
+Server = https://eu-mirror.artixlinux.org/repos/$repo/os/$arch
+
