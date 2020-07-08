@@ -1,31 +1,35 @@
 # For Gentoo
 class base::gentoo (
+  $accept_license = '-* @FREE',
+  $common_flags   = '-march=native -O2 -pipe',
+  $makeopts       = '-j2',
+  $mirrors        = 'https://mirror.bytemark.co.uk/gentoo/',
 
 ) inherits base {
 
   # Paquetes
-  package { [ $base_packages, $local_packages ] :
+  package { $local_packages :
     ensure => installed,
   }
 
-  package { 'cronie' :
+  package { 'sys-process/cronie' :
     ensure => installed,
   }
 
   service { 'cronie' :
     ensure  => running,
     enable  => true,
-    require => Package['cronie'],
+    require => Package['sys-process/cronie'],
   }
 
-  package { 'openntpd' :
+  package { 'net-misc/openntpd' :
     ensure => installed,
   }
 
-  service { 'openntpd' :
+  service { 'ntpd' :
     ensure  => running,
     enable  => true,
-    require => Package['openntpd'],
+    require => Package['net-misc/openntpd'],
   }
 
   file { '/etc/ntpd.conf' :
@@ -33,7 +37,7 @@ class base::gentoo (
     group   => root,
     mode    => '0644',
     content => template('base/ntpd.conf.erb'),
-    notify  => Service['openntpd'],
+    notify  => Service['ntpd'],
   }
 
   file { '/var/db/geoip' :
