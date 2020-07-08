@@ -8,6 +8,27 @@ class base::gentoo (
 ) inherits base {
 
   # Paquetes
+  file { '/etc/portage/make.conf' :
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    content => template('base/Gentoo/make.conf.erb'),
+  }
+
+  file { '/etc/portage/package.license' :
+    ensure => directory,
+    owner  => root,
+    group  => root,
+    mode   => '0755',
+  }
+  ->
+  file { '/etc/portage/package.license/kernel' :
+    owner => root,
+    group => root,
+    mode  => '0644',
+    source => 'puppet:///modules/base/Gentoo/license.kernel',
+  }
+  
   package { $local_packages :
     ensure => installed,
   }
