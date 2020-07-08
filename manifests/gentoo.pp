@@ -28,6 +28,13 @@ class base::gentoo (
     mode  => '0644',
     source => 'puppet:///modules/base/Gentoo/license.kernel',
   }
+
+  file { '/etc/conf.d/keymaps' :
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    content => template('base/Gentoo/keymaps.erb'),
+  }
   
   package { $local_packages :
     ensure => installed,
