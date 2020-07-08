@@ -50,6 +50,16 @@ class base::gentoo (
     require => Package['sys-process/cronie'],
   }
 
+  package { 'app-admin/sysklogd' :
+    ensure => installed,
+  }
+
+  service { 'sysklogd' :
+    ensure  => running,
+    enable  => true,
+    require => Package['app-admin/sysklogd'],
+  }
+
   package { 'net-misc/openntpd' :
     ensure => installed,
   }
