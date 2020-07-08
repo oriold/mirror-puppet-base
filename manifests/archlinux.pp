@@ -123,11 +123,6 @@ class base::archlinux (
     mode    => '0644',
     content => template('base/local-vault.sh.erb'),
   }
-
-  # SSH
-  service { $ssh_service :
-    ensure => running,
-  }
  
 }
 

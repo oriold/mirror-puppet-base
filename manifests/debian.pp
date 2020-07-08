@@ -46,9 +46,4 @@ class base::debian (
     }
   }
 
-  # SSH
-  service { $ssh_service :
-    ensure => running,
-  }
-
 }

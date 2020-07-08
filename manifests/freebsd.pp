@@ -60,9 +60,4 @@ class base::freebsd (
     require => File['/usr/local/etc/profile.d'],
   }
 
-  # SSH
-  service { $ssh_service :
-    ensure => running,
-  }
-
 }

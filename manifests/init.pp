@@ -21,6 +21,11 @@ class base (
   $ssh_service = hiera('ssh_service')
   $ssl_dir     = hiera('ssl_dir')
 
+  # SSH
+  service { $ssh_service :
+    ensure => running,
+  }
+
   file { '/etc/ssh/sshd_config' :
     owner   => root,
     group   => 0,

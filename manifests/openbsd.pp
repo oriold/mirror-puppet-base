@@ -147,9 +147,4 @@ class base::openbsd (
     require => File['/etc/profile.d'],
   }
 
-  # SSH
-  service { $ssh_service :
-    ensure => running,
-  }
-
 }
