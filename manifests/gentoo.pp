@@ -1,9 +1,10 @@
 # For Gentoo
 class base::gentoo (
-  $accept_license = '-* @FREE',
-  $common_flags   = '-march=native -O2 -pipe',
-  $makeopts       = '-j2',
-  $mirrors        = 'https://mirror.bytemark.co.uk/gentoo/',
+  $accept_license = undef,
+  $common_flags   = undef,
+  $makeopts       = undef,
+  $mirrors        = undef,
+  $use            = undef,
 
 ) inherits base {
 
