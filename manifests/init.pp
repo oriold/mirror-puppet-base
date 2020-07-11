@@ -21,6 +21,11 @@ class base (
   $ssh_service = hiera('ssh_service')
   $ssl_dir     = hiera('ssl_dir')
 
+  if $facts['os']['family'] == 'Alpine' {
+    Package { provider => 'apk' }
+    Service { provider => 'openrc' }
+  }
+  
   # SSH
   service { $ssh_service :
     ensure => running,

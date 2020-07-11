@@ -10,4 +10,5 @@ class base::alpine (
   package { [ $base_packages, $local_packages ] :
     ensure => installed,
   }
+  
 }
