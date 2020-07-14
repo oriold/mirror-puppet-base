@@ -36,6 +36,13 @@ class base::gentoo (
     mode    => '0644',
     content => template('base/Gentoo/keymaps.erb'),
   }
+
+  file { '/etc/env.d/02locale' :
+    owner  => root,
+    group  => root,
+    mode   => '0644',
+    source => 'puppet:///modules/base/Gentoo/02locale',
+  }
   
   package { $local_packages :
     ensure => installed,
