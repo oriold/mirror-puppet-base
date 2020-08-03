@@ -5,6 +5,7 @@ class base::gentoo (
   $makeopts       = undef,
   $mirrors        = undef,
   $use            = undef,
+  $video_cards    = undef,
 
 ) inherits base {
 
