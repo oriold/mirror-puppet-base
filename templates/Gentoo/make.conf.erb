@@ -21,8 +21,11 @@ LC_MESSAGES=C
 GENTOO_MIRRORS="<%= @mirrors %>"
 ACCEPT_LICENSE="<%= @accept_license %>"
 USE="<%= @use %>"
-<% if @l10n %>
+<% if @l10n -%>
 L10N="<%= @l10n %>"
+<% end -%>
+<% if @ruby_targets -%>
+RUBY_TARGETS="<%= @ruby_targets %>"
 <% end -%>
 <% if @video_cards -%>
 VIDEO_CARDS="<%= @video_cards %>"

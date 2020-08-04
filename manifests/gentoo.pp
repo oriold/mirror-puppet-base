@@ -5,6 +5,7 @@ class base::gentoo (
   $l10n           = undef,
   $makeopts       = undef,
   $mirrors        = undef,
+  $ruby_targets   = undef,
   $use            = undef,
   $video_cards    = undef,
 
