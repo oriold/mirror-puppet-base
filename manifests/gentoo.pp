@@ -7,6 +7,7 @@ class base::gentoo (
   $makeopts        = undef,
   $mirrors         = undef,
   $ruby_targets    = undef,
+  $package_license = undef,
   $package_use     = undef,
   $python_targets  = undef,
   $use             = undef,
