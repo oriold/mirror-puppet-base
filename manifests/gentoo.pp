@@ -35,6 +35,13 @@ class base::gentoo (
     mode    => '0644',
     content => template('base/Gentoo/portage.accept_keywords.erb'),
   }
+  ->
+  file { '/etc/portage/package.accept_keywords/zz-autounmask' :
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    content => '#package.accept_keywords#',
+  }
 
   file { '/etc/portage/package.license' :
     ensure => directory,
