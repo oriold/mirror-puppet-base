@@ -1,14 +1,16 @@
 # For Gentoo
 class base::gentoo (
-  $accept_license = undef,
-  $common_flags   = undef,
-  $l10n           = undef,
-  $makeopts       = undef,
-  $mirrors        = undef,
-  $ruby_targets   = undef,
-  $python_targets = undef,
-  $use            = undef,
-  $video_cards    = undef,
+  $accept_license  = undef,
+  $accept_keywords = undef,
+  $common_flags    = undef,
+  $l10n            = undef,
+  $makeopts        = undef,
+  $mirrors         = undef,
+  $ruby_targets    = undef,
+  $package_use     = undef,
+  $python_targets  = undef,
+  $use             = undef,
+  $video_cards     = undef,
 
 ) inherits base {
 
@@ -20,6 +22,20 @@ class base::gentoo (
     content => template('base/Gentoo/make.conf.erb'),
   }
 
+  file { '/etc/portage/package.accept_keywords' :
+    ensure => directory,
+    owner  => root,
+    group  => root,
+    mode   => '0755',
+  }
+  ->
+  file { '/etc/portage/package.accept_keywords/puppet-managed' :
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    content => template('base/Gentoo/portage.accept_keywords.erb'),
+  }
+
   file { '/etc/portage/package.license' :
     ensure => directory,
     owner  => root,
@@ -27,11 +43,46 @@ class base::gentoo (
     mode   => '0755',
   }
   ->
+  file { '/etc/portage/package.license/puppet-managed' :
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    content => template('base/Gentoo/portage.license.erb'),
+  }
+  ->
   file { '/etc/portage/package.license/kernel' :
-    owner => root,
-    group => root,
-    mode  => '0644',
+    owner  => root,
+    group  => root,
+    mode   => '0644',
     source => 'puppet:///modules/base/Gentoo/license.kernel',
+  }
+  ->
+  file { '/etc/portage/package.license/zz-autounmask' :
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    content => '#package.license#',
+  }
+
+  file { '/etc/portage/package.use' :
+    ensure => directory,
+    owner  => root,
+    group  => root,
+    mode   => '0755',
+  }
+  ->
+  file { '/etc/portage/package.use/puppet-managed' :
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    content => template('base/Gentoo/portage.use.erb'),
+  }
+  ->
+  file { '/etc/portage/package.use/zz-autounmask' :
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    content => '#package.use#',
   }
 
   file { '/etc/conf.d/keymaps' :
