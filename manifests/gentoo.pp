@@ -10,6 +10,7 @@ class base::gentoo (
   $package_license = undef,
   $package_use     = undef,
   $python_targets  = undef,
+  $uefi_boot       = undef,
   $use             = undef,
   $video_cards     = undef,
 
