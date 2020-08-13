@@ -99,22 +99,6 @@ class base::openbsd (
     replace => false,
     source  => 'puppet:///modules/base/OpenBSD/iked.conf.sample',
   }
-  
-  file { '/etc/mail/secrets' :
-    owner   => root,
-    group   => _smtpd,
-    mode    => '0640',
-    replace => false,
-    content => "Managed from puppet\n",
-  }
-  
-  file { '/etc/mail/secrets.db' :
-    owner   => root,
-    group   => _smtpd,
-    mode    => '0640',
-    replace => false,
-    content => "Managed from puppet\n",
-  }
 
   # Profile directory
   file { '/etc/profile' :
