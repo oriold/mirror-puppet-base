@@ -13,6 +13,7 @@ class base (
   $openbsd_mirror   = undef,
   $ssh_allow_groups = undef,
   $unbound_path     = undef,
+  $uninstall_pkgs   = undef,
   $vault_addr       = undef,
   $vault_token      = undef,
 
@@ -26,6 +27,11 @@ class base (
   if $facts['os']['family'] == 'Alpine' {
     Package { provider => 'apk' }
     Service { provider => 'openrc' }
+  }
+
+  # Packages uninstall
+  package { $uninstall_pkgs :
+    ensure => absent,
   }
   
   # SSH
