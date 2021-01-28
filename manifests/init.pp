@@ -63,9 +63,10 @@ class base (
   }
 
   user { 'backups' :
-    ensure  => present,
-    uid     => 1003,
-    require => Group['backups'],
+    ensure     => present,
+    uid        => 1003,
+    managehome => true,
+    require    => Group['backups'],
   }
 
   file { '/home/backups/.ssh' :
