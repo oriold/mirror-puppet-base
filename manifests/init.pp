@@ -56,6 +56,31 @@ class base (
     source => template('base/doas.conf.erb'),
   }
 
+  # Backups
+  group { 'backups' :
+    ensure => present,
+    gid    => 1003,
+  }
+
+  user { 'backups' :
+    ensure  => present,
+    uid     => 1003,
+    require => Group['backups'],
+  }
+
+  file { '/home/backups/.ssh' :
+    ensure => directory,
+    owner  => backups,
+    group  => backups,
+    mode   => '0700',
+  }
+  -> file { '/home/backups/.ssh/authorized_files' :
+    owner  => backups,
+    group  => backups,
+    mode   => '0600',
+    source => 'puppet:///modules/base/backups.pub',
+  }
+
   # SSL
   file { "${ssl_dir}/dhparam.pem" :
     owner  => root,
