@@ -41,13 +41,6 @@ class base::openbsd (
     content => "${openbsd_mirror}\n",
   }
 
-  file { '/etc/doas.conf' :
-    owner  => root,
-    group  => wheel,
-    mode   => '0644',
-    source => 'puppet:///modules/base/OpenBSD/doas.conf',
-  }
-
   file { '/etc/iked/pubkeys/fqdn/gtw-3.the-grid.xyz' :
     owner  => root,
     group  => wheel,

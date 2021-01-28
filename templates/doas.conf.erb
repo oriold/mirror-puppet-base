@@ -14,4 +14,4 @@ permit nopass setenv { \
 permit nopass keepenv :wheel
 
 # BackupPC
-permit nopass keepenv backups cmd /usr/local/bin/rsync
+permit nopass keepenv backups cmd <%= @bin_dir %>/rsync

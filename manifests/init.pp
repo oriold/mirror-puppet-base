@@ -2,6 +2,8 @@
 class base (
 
   $base_packages    = undef,
+  $bin_dir          = undef,
+  $etc_dir          = undef,
   $kbd_lang         = 'es',
   $local_packages   = undef,
   $ntp_master       = undef,
@@ -44,6 +46,14 @@ class base (
     group   => 0,
     mode    => '0755',
     content => template('base/unbound-block-hosts.pl.erb'),
+  }
+
+  # Doas
+  file { "${etc_dir}/doas.conf" :
+    owner  => root,
+    group  => 0,
+    mode   => '0600',
+    source => template('base/doas.conf.erb'),
   }
 
   # SSL
