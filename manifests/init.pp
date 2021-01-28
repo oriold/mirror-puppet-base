@@ -69,10 +69,11 @@ class base (
   }
 
   file { '/home/backups/.ssh' :
-    ensure => directory,
-    owner  => backups,
-    group  => backups,
-    mode   => '0700',
+    ensure  => directory,
+    owner   => backups,
+    group   => backups,
+    mode    => '0700',
+    require => User['backups'],
   }
   -> file { '/home/backups/.ssh/authorized_files' :
     owner  => backups,
