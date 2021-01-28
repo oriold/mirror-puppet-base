@@ -50,10 +50,10 @@ class base (
 
   # Doas
   file { "${etc_dir}/doas.conf" :
-    owner  => root,
-    group  => 0,
-    mode   => '0600',
-    source => template('base/doas.conf.erb'),
+    owner   => root,
+    group   => 0,
+    mode    => '0600',
+    content => template('base/doas.conf.erb'),
   }
 
   # Backups
