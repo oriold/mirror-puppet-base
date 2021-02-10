@@ -34,6 +34,15 @@ class base::openbsd (
     notify  => Service['ntpd'],
   }
 
+  if $ntp_rdate {
+    cron { 'sync-clock-force' :
+      ensure  => present,
+      command => "/usr/sbin/rdate ${ntp_servers} > /dev/null 2>&1",
+      user    => root,
+      minute  => "*/5",
+    }
+  }
+  
   file { '/etc/installurl' :
     owner   => root,
     group   => wheel,

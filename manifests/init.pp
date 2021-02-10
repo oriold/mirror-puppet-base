@@ -7,6 +7,7 @@ class base (
   $kbd_lang         = 'es',
   $local_packages   = undef,
   $ntp_master       = undef,
+  $ntp_rdate        = undef,
   $ntp_sensors      = true,
   $ntp_servers      = 'time.cloudflare.com',
   $openbsd_apmd     = '-A',
