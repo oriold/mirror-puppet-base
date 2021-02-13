@@ -11,7 +11,7 @@ permit nopass setenv { \
     SUBPACKAGE WRKOBJDIR SUDO_PORT_V1 } :wsrc
 
 # Allow wheel by default
-permit nopass keepenv :wheel
+permit nopass :wheel
 
 # BackupPC
-permit nopass keepenv backups cmd <%= @bin_dir %>/rsync
+permit nopass backups cmd <%= @bin_dir %>/rsync
