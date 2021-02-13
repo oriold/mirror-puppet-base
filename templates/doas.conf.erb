@@ -11,7 +11,9 @@ permit nopass setenv { \
     SUBPACKAGE WRKOBJDIR SUDO_PORT_V1 } :wsrc
 
 # Allow wheel by default
-permit nopass :wheel
+permit nopass setenv { \
+    EDITOR GOPATH PATH GPG_TTY LS_COLORS SSH_AUTH_SOCK \
+    TERM VAULT_ADDR VAULT_TOKEN } :wheel
 
 # BackupPC
 permit nopass backups cmd <%= @bin_dir %>/rsync
