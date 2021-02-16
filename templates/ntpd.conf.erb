@@ -1,10 +1,14 @@
 <% if @ntp_master -%>
+# master server
 listen on *
 <% end -%>
 
 <% if @ntp_sensors -%>
+# physical machine
 sensor *
 <% end -%>
 
 servers <%= @ntp_servers %>
 constraint from "https://9.9.9.9"
+
+# end configuration
