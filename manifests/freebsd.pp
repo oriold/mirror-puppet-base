@@ -14,6 +14,10 @@ class base::freebsd (
     ensure => installed,
   }
 
+  service { 'openntpd' :
+    ensure => running,
+  }
+
   file { '/usr/local/etc/ntpd.conf' :
     owner   => root,
     group   => wheel,
