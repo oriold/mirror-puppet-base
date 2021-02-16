@@ -10,10 +10,19 @@ class base::freebsd (
   }
 
   # NTP
-  class { '::ntp' :
-    servers => [ $ntp_servers ],
+  package { 'openntpd' :
+    ensure => installed,
   }
 
+  file { '/usr/local/etc/ntpd.conf' :
+    owner   => root,
+    group   => wheel,
+    mode    => '0644',
+    content => template('base/ntpd.conf.erb'),
+    notify  => Service['openntpd'],
+    require => Package['openntpd'],
+  }
+  
   file { '/etc/make.conf' :
     owner  => root,
     group  => wheel,
