@@ -11,6 +11,22 @@ class base::alpine (
     ensure => installed,
   }
 
+  # cron
+  package { [ 'dcron', 'dcron-doc' ] :
+    ensure => installed,
+  }
+
+  service { 'crond' :
+    ensure => stopped,
+    enable => false,
+  }
+
+  service { 'dcron' :
+    ensure  => running,
+    enable  => true,
+    require => Package['dcron'],
+  }
+  
   package { 'openntpd' :
     ensure => installed,
   }
