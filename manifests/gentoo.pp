@@ -45,7 +45,7 @@ class base::gentoo (
     content => '#package.accept_keywords#',
   }
 
-  file { '/etc/portage/package.env' :
+  file { '/etc/portage/env' :
     ensure => directory,
     owner  => root,
     group  => root,
