@@ -52,7 +52,7 @@ class base::gentoo (
     mode   => '0755',
   }
   ->
-  file { '/etc/portage/package.env/civ5fix' :
+  file { '/etc/portage/env/civ5fix' :
     owner   => root,
     group   => root,
     mode    => '0644',
