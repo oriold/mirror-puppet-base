@@ -45,6 +45,20 @@ class base::gentoo (
     content => '#package.accept_keywords#',
   }
 
+  file { '/etc/portage/package.env' :
+    ensure => directory,
+    owner  => root,
+    group  => root,
+    mode   => '0755',
+  }
+  ->
+  file { '/etc/portage/package.env/civ5fix' :
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    content => 'puppet:///modules/base/Gentoo/portage.civ5fix',
+  }
+  
   file { '/etc/portage/package.license' :
     ensure => directory,
     owner  => root,

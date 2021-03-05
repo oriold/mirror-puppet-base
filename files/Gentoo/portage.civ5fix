@@ -1,0 +1,1 @@
+CFLAGS="-march=x86-64 -O1 -pipe"
