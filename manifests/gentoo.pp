@@ -7,6 +7,7 @@ class base::gentoo (
   $makeopts        = undef,
   $mirrors         = undef,
   $ruby_targets    = undef,
+  $package_env     = undef,
   $package_license = undef,
   $package_use     = undef,
   $python_targets  = undef,
@@ -53,10 +54,31 @@ class base::gentoo (
   }
   ->
   file { '/etc/portage/env/civ5fix' :
+    owner  => root,
+    group  => root,
+    mode   => '0644',
+    source => 'puppet:///modules/base/Gentoo/portage.civ5fix',
+  }
+  ->
+  file { '/etc/portage/env/monerofix' :
+    owner  => root,
+    group  => root,
+    mode   => '0644',
+    source => 'puppet:///modules/base/Gentoo/portage.monerofix',
+  }
+
+  file { '/etc/portage/package.env' :
+    ensure => directory,
+    owner  => root,
+    group  => root,
+    mode   => '0755',
+  }
+  ->
+  file { '/etc/portage/package.env/puppet-managed' :
     owner   => root,
     group   => root,
     mode    => '0644',
-    content => 'puppet:///modules/base/Gentoo/portage.civ5fix',
+    content => template('base/Gentoo/portage.env.erb'),
   }
   
   file { '/etc/portage/package.license' :
