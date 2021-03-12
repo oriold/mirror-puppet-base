@@ -61,10 +61,7 @@ class base::gentoo (
   }
   ->
   file { '/etc/portage/env/monerofix' :
-    owner  => root,
-    group  => root,
-    mode   => '0644',
-    source => 'puppet:///modules/base/Gentoo/portage.monerofix',
+    ensure => absent,
   }
 
   file { '/etc/portage/package.env' :
