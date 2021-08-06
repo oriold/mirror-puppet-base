@@ -3,6 +3,7 @@ class base (
 
   $base_packages    = undef,
   $bin_dir          = undef,
+  $blacklistd       = undef,
   $etc_dir          = undef,
   $kbd_lang         = 'es',
   $local_packages   = undef,

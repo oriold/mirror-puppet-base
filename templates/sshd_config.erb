@@ -21,3 +21,7 @@ AuthorizedKeysFile	.ssh/authorized_keys
 
 TCPKeepAlive	       yes
 Subsystem       sftp    /usr/libexec/sftp-server -l VERBOSE
+
+<% if @blacklistd %>
+UseBlacklist	  yes
+<% end -%>
