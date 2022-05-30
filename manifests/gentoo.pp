@@ -1,20 +1,21 @@
 # For Gentoo
 class base::gentoo (
-  $accept_license       = undef,
-  $accept_keywords      = undef,
   $common_flags         = undef,
   $l10n                 = undef,
   $makeopts             = undef,
   $mirrors              = undef,
   $ruby_targets         = undef,
-  $package_env          = undef,
-  $package_license      = undef,
-  $package_use          = undef,
   $python_single_target = undef,
   $python_targets       = undef,
   $uefi_boot            = undef,
+  $umask                = 'umask 027',
   $use                  = undef,
   $video_cards          = undef,
+  $zfs_pool             = 'zroot',
+  $zfs_keep_hourly      = '8',
+  $zfs_keep_daily       = '7',
+  $zfs_keep_weekly      = '4',
+  $zfs_keep_monthly     = '3',
 
 ) inherits base {
 
@@ -33,13 +34,6 @@ class base::gentoo (
     mode   => '0755',
   }
   ->
-  file { '/etc/portage/package.accept_keywords/puppet-managed' :
-    owner   => root,
-    group   => root,
-    mode    => '0644',
-    content => template('base/Gentoo/portage.accept_keywords.erb'),
-  }
-  ->
   file { '/etc/portage/package.accept_keywords/zz-autounmask' :
     owner   => root,
     group   => root,
@@ -54,14 +48,7 @@ class base::gentoo (
     mode   => '0755',
   }
   ->
-  file { '/etc/portage/env/civ5fix' :
-    owner  => root,
-    group  => root,
-    mode   => '0644',
-    source => 'puppet:///modules/base/Gentoo/portage.civ5fix',
-  }
-  ->
-  file { '/etc/portage/env/monerofix' :
+  file { [ '/etc/portage/env/civ5fix', '/etc/portage/env/monerofix' ] :
     ensure => absent,
   }
 
@@ -71,26 +58,12 @@ class base::gentoo (
     group  => root,
     mode   => '0755',
   }
-  ->
-  file { '/etc/portage/package.env/puppet-managed' :
-    owner   => root,
-    group   => root,
-    mode    => '0644',
-    content => template('base/Gentoo/portage.env.erb'),
-  }
   
   file { '/etc/portage/package.license' :
     ensure => directory,
     owner  => root,
     group  => root,
     mode   => '0755',
-  }
-  ->
-  file { '/etc/portage/package.license/puppet-managed' :
-    owner   => root,
-    group   => root,
-    mode    => '0644',
-    content => template('base/Gentoo/portage.license.erb'),
   }
   ->
   file { '/etc/portage/package.license/kernel' :
@@ -112,13 +85,6 @@ class base::gentoo (
     owner  => root,
     group  => root,
     mode   => '0755',
-  }
-  ->
-  file { '/etc/portage/package.use/puppet-managed' :
-    owner   => root,
-    group   => root,
-    mode    => '0644',
-    content => template('base/Gentoo/portage.use.erb'),
   }
   ->
   file { '/etc/portage/package.use/zz-autounmask' :
@@ -189,6 +155,49 @@ class base::gentoo (
     owner  => root,
     group  => root,
     mode   => '0755',
+  }
+
+  # ZFS
+  file { '/etc/cron.weekly/zfs-scrub' :
+    owner   => root,
+    group   => root,
+    mode    => '0755',
+    content => template('base/Gentoo/zfs-scrub.erb'),
+  }
+
+  file { '/etc/cron.hourly/zfs-auto-snapshot' :
+    owner   => root,
+    group   => root,
+    mode    => '0755',
+    content => template('base/Gentoo/zfs-autosnapshot-hourly.erb'),
+  }
+
+  file { '/etc/cron.daily/zfs-auto-snapshot' :
+    owner   => root,
+    group   => root,
+    mode    => '0755',
+    content => template('base/Gentoo/zfs-autosnapshot-daily.erb'),
+  }
+
+  file { '/etc/cron.weekly/zfs-auto-snapshot' :
+    owner   => root,
+    group   => root,
+    mode    => '0755',
+    content => template('base/Gentoo/zfs-autosnapshot-weekly.erb'),
+  }
+
+  file { '/etc/cron.monthly/zfs-auto-snapshot' :
+    owner   => root,
+    group   => root,
+    mode    => '0755',
+    content => template('base/Gentoo/zfs-autosnapshot-monthly.erb'),
+  }
+  
+  # Change umask
+  file_line { 'change_umask' :
+    path  => '/etc/profile',
+    line  => $umask,
+    match => '^umask',
   }
 
   # Vault
