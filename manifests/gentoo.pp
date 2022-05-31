@@ -1,5 +1,6 @@
 # For Gentoo
 class base::gentoo (
+  $accept_license       = undef,
   $common_flags         = undef,
   $l10n                 = undef,
   $makeopts             = undef,
