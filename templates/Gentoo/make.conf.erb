@@ -38,4 +38,6 @@ VIDEO_CARDS="<%= @video_cards %>"
 <% end -%>
 <% if @uefi_boot -%>
 GRUB_PLATFORMS="efi-64"
+<% else -%>
+GRUB_PLATFORMS="pc"
 <% end -%>
