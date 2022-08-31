@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# configuration
+url="https://cnxnet.be/hosts/local-blocking-data.conf"
+file="<%= @unbound_path %>/local-blocking-data.conf"
+
+if [ -f $file ];
+then
+    rm $file
+fi
+
+cd <%= @unbound_path %>
+wget -q --no-proxy -O local-blocking-data.conf $url

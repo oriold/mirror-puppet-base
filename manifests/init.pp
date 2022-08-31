@@ -50,10 +50,14 @@ class base (
   }
 
   file { '/usr/local/bin/unbound-block-hosts.pl' :
+    ensure => absent,
+  }
+
+  file { '/usr/local/bin/unbound-block-hosts.sh' :
     owner   => root,
     group   => 0,
     mode    => '0755',
-    content => template('base/unbound-block-hosts.pl.erb'),
+    content => template('base/unbound-block-hosts.sh.erb'),
   }
 
   # Doas
