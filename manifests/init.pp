@@ -60,6 +60,15 @@ class base (
     content => template('base/unbound-block-hosts.sh.erb'),
   }
 
+  cron { 'update-unbound' :
+    ensure  => present,
+    command => "/usr/local/bin/unbound-block-hosts.sh && ${unbound_restart} > /dev/null 2>&1",
+    user    => root,
+    minute  => fqdn_rand(60),
+    hour    => 10,
+    require => File['/usr/local/bin/unbound-block-hosts.sh'],
+  }
+
   # Doas
   file { "${etc_dir}/doas.conf" :
     owner   => root,
