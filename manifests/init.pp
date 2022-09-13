@@ -14,6 +14,7 @@ class base (
   $openbsd_apmd     = '-A',
   $openbsd_mirror   = undef,
   $ssh_allow_groups = undef,
+  $unbound_cron     = true,
   $unbound_path     = undef,
   $unbound_restart  = undef,
   $uninstall_pkgs   = undef,
@@ -61,13 +62,15 @@ class base (
     content => template('base/unbound-block-hosts.sh.erb'),
   }
 
-  cron { 'update-unbound' :
-    ensure  => present,
-    command => "/usr/local/bin/unbound-block-hosts.sh && ${unbound_restart} > /dev/null 2>&1",
-    user    => root,
-    minute  => fqdn_rand(30),
-    hour    => 10,
-    require => File['/usr/local/bin/unbound-block-hosts.sh'],
+  if $unbound_cron {
+    cron { 'update-unbound' :
+      ensure  => present,
+      command => "/usr/local/bin/unbound-block-hosts.sh && ${unbound_restart} > /dev/null 2>&1",
+      user    => root,
+      minute  => fqdn_rand(30),
+      hour    => 10,
+      require => File['/usr/local/bin/unbound-block-hosts.sh'],
+    }
   }
 
   # Doas
