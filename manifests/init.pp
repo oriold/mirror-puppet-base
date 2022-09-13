@@ -15,6 +15,7 @@ class base (
   $openbsd_mirror   = undef,
   $ssh_allow_groups = undef,
   $unbound_path     = undef,
+  $unbound_restart  = undef,
   $uninstall_pkgs   = undef,
   $vault_addr       = undef,
   $vault_token      = undef,
