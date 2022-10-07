@@ -13,6 +13,7 @@ class base (
   $ntp_servers      = 'time.cloudflare.com',
   $openbsd_apmd     = '-A',
   $openbsd_mirror   = undef,
+  $snap_packages    = undef,
   $ssh_allow_groups = undef,
   $unbound_cron     = true,
   $unbound_path     = undef,
