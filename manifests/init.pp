@@ -1,6 +1,7 @@
 # Basic module
 class base (
 
+  $admin_group      = 'wheel',
   $base_packages    = undef,
   $bin_dir          = undef,
   $blacklistd       = undef,
