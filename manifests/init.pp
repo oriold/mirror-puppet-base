@@ -101,7 +101,7 @@ class base (
     mode    => '0700',
     require => User['backups'],
   }
-  -> file { '/home/backups/.ssh/authorized_files' :
+  -> file { '/home/backups/.ssh/authorized_keys' :
     owner  => backups,
     group  => backups,
     mode   => '0600',
