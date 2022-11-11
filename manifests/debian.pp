@@ -4,6 +4,8 @@ class base::debian (
 
 ) inherits base {
 
+  include snap
+  
   # Paquetes
   package { [ $base_packages, $local_packages ] :
     ensure => installed,
@@ -37,13 +39,10 @@ class base::debian (
     content => template('base/local-vault.sh.erb'),
   }
 
-  if $facts['os']['hardware'] == 'x86_64' {
-    file { "/usr/local/bin/vault" :
-      owner => root,
-      group => root,
-      mode  => '0755',
-      source => 'puppet:///modules/base/Debian/vault',
-    }
+  package { $snap_packages :
+    ensure   => installed,
+    provider => 'snap',
   }
+  
 
 }

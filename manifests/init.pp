@@ -1,6 +1,7 @@
 # Basic module
 class base (
 
+  $admin_group      = 'wheel',
   $base_packages    = undef,
   $bin_dir          = undef,
   $blacklistd       = undef,
@@ -13,6 +14,7 @@ class base (
   $ntp_servers      = 'time.cloudflare.com',
   $openbsd_apmd     = '-A',
   $openbsd_mirror   = undef,
+  $snap_packages    = undef,
   $ssh_allow_groups = undef,
   $unbound_cron     = true,
   $unbound_path     = undef,
