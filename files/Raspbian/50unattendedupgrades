@@ -6,5 +6,5 @@ Unattended-Upgrade::Origins-Pattern {
         "origin=Raspberry Pi Foundation,codename=${distro_codename},label=Raspberry Pi Foundation";
 };
 
-Unattended-Upgrade::Mail "servers@the-grid.xyz";
+Unattended-Upgrade::Mail "servers@cnxnet.be";
 Unattended-Upgrade::Automatic-Reboot "true";

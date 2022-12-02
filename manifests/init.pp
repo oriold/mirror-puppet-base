@@ -16,7 +16,7 @@ class base (
   $openbsd_mirror   = undef,
   $snap_packages    = undef,
   $ssh_allow_groups = undef,
-  $unbound_cron     = true,
+  $unbound_cron     = false,
   $unbound_path     = undef,
   $unbound_restart  = undef,
   $uninstall_pkgs   = undef,
@@ -72,6 +72,11 @@ class base (
       minute  => fqdn_rand(30),
       hour    => 10,
       require => File['/usr/local/bin/unbound-block-hosts.sh'],
+    }
+  }
+  else {
+    cron { 'update-unbound':
+      ensure => absent,
     }
   }
 

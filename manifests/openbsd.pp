@@ -50,13 +50,6 @@ class base::openbsd (
     content => "${openbsd_mirror}\n",
   }
 
-  file { '/etc/iked/pubkeys/fqdn/gtw-3.the-grid.xyz' :
-    owner  => root,
-    group  => wheel,
-    mode   => '0644',
-    source => 'puppet:///modules/base/OpenBSD/gtw-3.the-grid.xyz',
-  }
-
   file { '/etc/sysclean.ignore' :
     owner  => root,
     group  => wheel,
