@@ -41,3 +41,5 @@ GRUB_PLATFORMS="efi-64"
 <% else -%>
 GRUB_PLATFORMS="pc"
 <% end -%>
+FEATURES="${FEATURES} binpkg-request-signature"
+EMERGE_DEFAULT_OPS="--getbinpkg"

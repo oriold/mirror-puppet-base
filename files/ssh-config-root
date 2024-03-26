@@ -1,0 +1,4 @@
+Host gitlab.galaxybox.eu
+    User git
+    Port 2200
+    IdentityFile ~/.ssh/deploy-key

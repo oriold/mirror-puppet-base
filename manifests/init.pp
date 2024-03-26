@@ -149,6 +149,25 @@ class base (
     mode   => '0644',
     source => 'puppet:///modules/base/motd',
   }
-  
+
+  # root checkout
+  file { '/root/.ssh' :
+    ensure  => directory,
+    owner   => root,
+    group   => 0,
+    mode    => '0700',
+  }
+  -> file { '/root/.ssh/deploy-key' :
+    owner  => root,
+    group  => 0,
+    mode   => '0600',
+    source => 'puppet:///modules/base/deploy-key',
+  }
+  -> file { '/root/.ssh/config' :
+    owner  => root,
+    group  => 0,
+    mode   => '0600',
+    source => 'puppet:///modules/base/ssh-config-root',
+  }
 }
 
