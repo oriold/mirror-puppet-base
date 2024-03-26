@@ -17,3 +17,6 @@ permit nopass setenv { \
 
 # BackupPC
 permit nopass backups cmd <%= @bin_dir %>/rsync
+permit nopass backups as oriol cmd /home/oriol/bin/suspend.sh
+
+# Because doas.conf doesn't like endfiles

@@ -1,11 +1,11 @@
 {
     "name": "base",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "author": "Oriol Demaria",
     "summary": "Standard server setup for all servers.",
     "license": "ISC",
-    "source": "git@gitlab.the-grid.xyz:puppet/puppet-base.git",
-    "project_page": "https://gitlab.the-grid.xyz/puppet/puppet-base",
+    "source": "ssh://git@gitlab.galaxybox.eu:2200/puppet/puppet-base.git",
+    "project_page": "https://gitlab.galaxybox.eu/puppet/puppet-base",
     "issues_url": null,
     "dependencies": [ 
 	{

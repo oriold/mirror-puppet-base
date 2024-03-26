@@ -14,9 +14,10 @@ class base (
   $ntp_servers      = 'time.cloudflare.com',
   $openbsd_apmd     = '-A',
   $openbsd_mirror   = undef,
+  $sftp_path        = undef,
   $snap_packages    = undef,
   $ssh_allow_groups = undef,
-  $unbound_cron     = true,
+  $unbound_cron     = false,
   $unbound_path     = undef,
   $unbound_restart  = undef,
   $uninstall_pkgs   = undef,
@@ -74,6 +75,11 @@ class base (
       require => File['/usr/local/bin/unbound-block-hosts.sh'],
     }
   }
+  else {
+    cron { 'update-unbound':
+      ensure => absent,
+    }
+  }
 
   # Doas
   file { "${etc_dir}/doas.conf" :
@@ -103,7 +109,7 @@ class base (
     mode    => '0700',
     require => User['backups'],
   }
-  -> file { '/home/backups/.ssh/authorized_files' :
+  -> file { '/home/backups/.ssh/authorized_keys' :
     owner  => backups,
     group  => backups,
     mode   => '0600',
