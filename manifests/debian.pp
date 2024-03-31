@@ -37,12 +37,6 @@ class base::debian (
     group   => root,
     mode    => '0644',
     content => template('base/local-vault.sh.erb'),
-  }
-
-  package { $snap_packages :
-    ensure   => installed,
-    provider => 'snap',
-  }
-  
+  }  
 
 }
