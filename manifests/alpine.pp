@@ -60,11 +60,30 @@ class base::alpine (
   }
 
   # Vault
+  if $facts['os']['hardware'] == 'arm64' {
+    $vault_file = "vault_arm64"
+  } else {
+    $vault_file = "vault_amd64"
+  }
+
+  file { '/usr/local/bin/vault' :
+    owner  => root,
+    group  => 0,
+    mode   => '0755',
+    source => "puppet:///modules/base/${vault_file}",
+  }
+  
   file { '/etc/profile.d/local-vault.sh' :
     owner   => root,
     group   => wheel,
     mode    => '0644',
     content => template('base/local-vault.sh.erb'),
   }
-  
+
+  # maintenance
+  if $maintenance {
+    package { 'apk-cron' :
+      ensure => installed,
+    }
+  }
 }

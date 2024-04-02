@@ -8,6 +8,8 @@ class base (
   $etc_dir          = undef,
   $kbd_lang         = 'es',
   $local_packages   = undef,
+  $maintenance      = false,
+  $maintenance_wday = 6,
   $ntp_master       = undef,
   $ntp_rdate        = undef,
   $ntp_sensors      = true,
@@ -53,6 +55,27 @@ class base (
     content => template('base/sshd_config.erb'),
     notify  => Service[$ssh_service],
   }
+
+  # maintenance
+  if $maintenance {
+    file { '/usr/local/bin/maintenance.sh' :
+      owner  => root,
+      group  => 0,
+      mode   => '0755',
+      source => 'puppet:///modules/base/maintenance.sh',
+    }
+    
+    cron { 'maintenance' :
+      ensure => present,
+      command => "/usr/local/bin/maintenance.sh",
+      user    => root,
+      minute  => fqdn_rand(30),
+      hour    => 0,
+      weekday => $maintenance_wday,
+      require => File['/usr/local/bin/maintenance.sh'],
+    }
+  }
+  
 
   file { '/usr/local/bin/unbound-block-hosts.pl' :
     ensure => absent,
