@@ -4,8 +4,6 @@ class base::debian (
 
 ) inherits base {
 
-  include snap
-  
   # Paquetes
   package { [ $base_packages, $local_packages ] :
     ensure => installed,
