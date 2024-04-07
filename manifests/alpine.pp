@@ -60,7 +60,7 @@ class base::alpine (
   }
 
   # Vault
-  if $facts['os']['hardware'] == 'arm64' {
+  if $facts['os']['hardware'] == 'aarch64' {
     $vault_file = "vault_arm64"
   } else {
     $vault_file = "vault_amd64"
