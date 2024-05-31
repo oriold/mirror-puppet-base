@@ -16,6 +16,8 @@ class base (
   $ntp_servers      = 'time.cloudflare.com',
   $openbsd_apmd     = '-A',
   $openbsd_mirror   = undef,
+  $puppet_agent     = undef,
+  $reboot_cmd       = undef,
   $sftp_path        = undef,
   $snap_packages    = undef,
   $ssh_allow_groups = undef,
@@ -59,10 +61,10 @@ class base (
   # maintenance
   if $maintenance {
     file { '/usr/local/bin/maintenance.sh' :
-      owner  => root,
-      group  => 0,
-      mode   => '0755',
-      source => 'puppet:///modules/base/maintenance.sh',
+      owner   => root,
+      group   => 0,
+      mode    => '0755',
+      content => template('base/maintenance.sh.erb'),
     }
     
     cron { 'maintenance' :
