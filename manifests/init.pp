@@ -114,6 +114,13 @@ class base (
     content => template('base/doas.conf.erb'),
   }
 
+  file { '/etc/doas.d/doas.conf' :
+    ensure => absent,
+  }
+  -> file { '/etc/doas.d' :
+    ensure => absent,
+  }
+
   # Backups
   group { 'backups' :
     ensure => present,
