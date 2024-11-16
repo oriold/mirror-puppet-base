@@ -35,6 +35,11 @@ class base::debian (
     group   => root,
     mode    => '0644',
     content => template('base/local-vault.sh.erb'),
-  }  
+  }
 
+  if $maintenance {
+    package { 'cron-apt' :
+      ensure => installed,
+    }
+  }
 }

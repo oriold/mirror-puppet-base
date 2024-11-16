@@ -200,5 +200,13 @@ class base (
     mode   => '0600',
     source => 'puppet:///modules/base/ssh-config-root',
   }
+
+  # hosts
+  host { 'puppet.cnxnet.be':
+    ensure       => 'present',
+    host_aliases => ['puppet'],
+    ip           => '100.69.179.57',
+    target       => '/etc/hosts',
+  }
 }
 
