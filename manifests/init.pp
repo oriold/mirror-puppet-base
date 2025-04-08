@@ -117,9 +117,6 @@ class base (
   file { '/etc/doas.d/doas.conf' :
     ensure => absent,
   }
-  -> file { '/etc/doas.d' :
-    ensure => absent,
-  }
 
   # Backups
   group { 'backups' :
