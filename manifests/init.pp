@@ -145,7 +145,7 @@ class base (
     owner  => backups,
     group  => backups,
     mode   => '0600',
-    source => 'puppet:///modules/base/backups.pub',
+    source => 'puppet:///modules/base/remote-admin.pub',
   }
 
   # SSL
@@ -195,11 +195,11 @@ class base (
     group   => 0,
     mode    => '0700',
   }
-  -> file { '/root/.ssh/deploy-key' :
+  -> file { '/root/.ssh/deploy' :
     owner  => root,
     group  => 0,
     mode   => '0600',
-    source => 'puppet:///modules/base/deploy-key',
+    source => 'puppet:///modules/base/deploy',
   }
   -> file { '/root/.ssh/config' :
     owner  => root,

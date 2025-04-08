@@ -1,4 +1,9 @@
-Host gitlab.galaxybox.eu
+Host forge.galaxybox.eu
     User git
     Port 2200
-    IdentityFile ~/.ssh/deploy-key
+    IdentityFile ~/.ssh/deploy
+
+Host forge.galaxybox.eu
+    User git
+    Port 2200
+    IdentityFile ~/.ssh/deploy
