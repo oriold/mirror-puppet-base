@@ -2,6 +2,7 @@
 class base (
 
   $admin_group      = 'wheel',
+  $default_shell    = undef,
   $base_packages    = undef,
   $bin_dir          = undef,
   $blacklistd       = undef,
@@ -128,6 +129,7 @@ class base (
     ensure     => present,
     uid        => 1003,
     managehome => true,
+    shell      => $default_shell,
     require    => Group['backups'],
   }
 
