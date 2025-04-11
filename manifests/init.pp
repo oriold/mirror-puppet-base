@@ -8,6 +8,7 @@ class base (
   $blacklistd       = undef,
   $cert_deploy      = true,
   $cert_dir         = '/var/lib/dehydrated/certs',
+  $cert_postcmd     = undef,
   $cert_source      = 'onyx.triceratops-chimera.ts.net',
   $etc_dir          = undef,
   $kbd_lang         = 'es',
