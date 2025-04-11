@@ -1,6 +1,19 @@
 #!/usr/bin/env bash
 
-PATH="/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin"
+export PATH="/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin"
 
+if [ -d /opt/puppetlabs/puppet ]
+then
+    export PATH="/opt/puppetlabs/puppet/bin:$PATH"
+fi
+
+# Specific actions to be taken
+<% if @maintenance_cmds %>
+<% @maintenance_cmds.each do |cmd| %>
+<%= cmd %>
+<% end -%>
+<% end -%>
+
+# Generic actions to be taken
 <%= @puppet_agent %>
 <%= @reboot_cmd %>

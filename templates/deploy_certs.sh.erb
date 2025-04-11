@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+local_datadir=<%= @local_datadir %>
+
+if [ ! -d $local_datadir ]
+then
+    echo "Missing data directory, not sure what to do"
+    exit 0
+else
+    if [ ! -d ${local_datadir}/certs ]
+    then
+	mkdir ${local_datadir}/certs
+    fi
+fi
+
+rsync -avz --rsync-path='doas rsync' <%= @cert_source %>:<%= @cert_dir %>/ ${local_datadir}/certs/

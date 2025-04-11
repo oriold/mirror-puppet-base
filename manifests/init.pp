@@ -6,19 +6,23 @@ class base (
   $base_packages    = undef,
   $bin_dir          = undef,
   $blacklistd       = undef,
+  $cert_source      = 'onyx.triceratops-chimera.ts.net',
+  $cert_dir         = '/var/lib/puppet/ssl',
   $etc_dir          = undef,
   $kbd_lang         = 'es',
   $local_packages   = undef,
+  $local_datadir    = undef,
   $maintenance      = false,
-  $maintenance_wday = 6,
+  $maintenance_cmds = undef,
+  $maintenance_wday = 3,
   $ntp_master       = undef,
   $ntp_rdate        = undef,
   $ntp_sensors      = true,
   $ntp_servers      = 'time.cloudflare.com',
   $openbsd_apmd     = '-A',
   $openbsd_mirror   = undef,
-  $puppet_agent     = undef,
-  $reboot_cmd       = undef,
+  $puppet_agent     = 'puppet agent -t',
+  $reboot_cmd       = 'reboot',
   $sftp_path        = undef,
   $snap_packages    = undef,
   $ssh_allow_groups = undef,
@@ -73,22 +77,14 @@ class base (
       command => "/usr/local/bin/maintenance.sh",
       user    => root,
       minute  => fqdn_rand(30),
-      hour    => 0,
+      hour    => 3,
       weekday => $maintenance_wday,
       require => File['/usr/local/bin/maintenance.sh'],
     }
   }
-  
 
   file { '/usr/local/bin/unbound-block-hosts.pl' :
     ensure => absent,
-  }
-
-  file { '/usr/local/bin/unbound-block-hosts.sh' :
-    owner   => root,
-    group   => 0,
-    mode    => '0755',
-    content => template('base/unbound-block-hosts.sh.erb'),
   }
 
   if $unbound_cron {
@@ -100,11 +96,23 @@ class base (
       hour    => 10,
       require => File['/usr/local/bin/unbound-block-hosts.sh'],
     }
+
+    file { '/usr/local/bin/unbound-block-hosts.sh' :
+      owner   => root,
+      group   => 0,
+      mode    => '0755',
+      content => template('base/unbound-block-hosts.sh.erb'),
+    }
   }
   else {
     cron { 'update-unbound':
       ensure => absent,
     }
+
+    file { '/usr/local/bin/unbound-block-hosts.sh' :
+      ensure => absent,
+    }
+
   }
 
   # Doas
@@ -145,6 +153,24 @@ class base (
     group  => backups,
     mode   => '0600',
     source => 'puppet:///modules/base/remote-admin.pub',
+  }
+  -> file { '/usr/local/bin/deploy_certs.sh' :
+    owner => root,
+    group => 0,
+    mode  => '0755',
+    content => template('base/deploy_certs.sh.erb'),
+  }
+
+  cron { 'update-certs' :
+    ensure  => present,
+    command => "/usr/local/bin/deploy-certs.sh > /dev/null 2>&1",
+    user    => backups,
+    minute  => fqdn_rand(20),
+    hour    => 0,
+    require => [ 
+      File['/usr/local/bin/deploy-certs.sh'],
+      User['backups'],
+    ],
   }
 
   # SSL
