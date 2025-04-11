@@ -156,21 +156,21 @@ class base (
     source => 'puppet:///modules/base/remote-admin.pub',
   }
   -> file { '/usr/local/bin/deploy_certs.sh' :
-    owner => root,
-    group => 0,
-    mode  => '0755',
+    owner   => root,
+    group   => 0,
+    mode    => '0755',
     content => template('base/deploy_certs.sh.erb'),
   }
 
   if $cert_deploy {
     cron { 'update-certs' :
       ensure  => present,
-      command => "/usr/local/bin/deploy-certs.sh > /dev/null 2>&1",
+      command => "/usr/local/bin/deploy_certs.sh > /dev/null 2>&1",
       user    => backups,
       minute  => fqdn_rand(20),
       hour    => 0,
       require => [ 
-                   File['/usr/local/bin/deploy-certs.sh'],
+                   File['/usr/local/bin/deploy_certs.sh'],
                    User['backups'],
                  ],
     }
