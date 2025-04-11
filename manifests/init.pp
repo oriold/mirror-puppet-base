@@ -6,8 +6,9 @@ class base (
   $base_packages    = undef,
   $bin_dir          = undef,
   $blacklistd       = undef,
-  $cert_source      = 'onyx.triceratops-chimera.ts.net',
+  $cert_deploy      = true,
   $cert_dir         = '/var/lib/puppet/ssl',
+  $cert_source      = 'onyx.triceratops-chimera.ts.net',
   $etc_dir          = undef,
   $kbd_lang         = 'es',
   $local_packages   = undef,
@@ -161,16 +162,18 @@ class base (
     content => template('base/deploy_certs.sh.erb'),
   }
 
-  cron { 'update-certs' :
-    ensure  => present,
-    command => "/usr/local/bin/deploy-certs.sh > /dev/null 2>&1",
-    user    => backups,
-    minute  => fqdn_rand(20),
-    hour    => 0,
-    require => [ 
-      File['/usr/local/bin/deploy-certs.sh'],
-      User['backups'],
-    ],
+  if $cert_deploy {
+    cron { 'update-certs' :
+      ensure  => present,
+      command => "/usr/local/bin/deploy-certs.sh > /dev/null 2>&1",
+      user    => backups,
+      minute  => fqdn_rand(20),
+      hour    => 0,
+      require => [ 
+                   File['/usr/local/bin/deploy-certs.sh'],
+                   User['backups'],
+                 ],
+    }
   }
 
   # SSL
