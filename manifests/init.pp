@@ -7,7 +7,7 @@ class base (
   $bin_dir          = undef,
   $blacklistd       = undef,
   $cert_deploy      = true,
-  $cert_dir         = '/var/lib/puppet/ssl',
+  $cert_dir         = '/var/lib/dehydrated/certs',
   $cert_source      = 'onyx.triceratops-chimera.ts.net',
   $etc_dir          = undef,
   $kbd_lang         = 'es',
