@@ -14,4 +14,4 @@ else
     fi
 fi
 
-doas rsync -avz -i /home/backups/.ssh/id_ed25519 --rsync-path='doas rsync' backups@<%= @cert_source %>:<%= @cert_dir %>/ ${local_datadir}/certs/
+doas <%= @bin_dir %>/rsync -avz -e 'ssh -i /home/backups/.ssh/id_ed25519' --rsync-path='doas /usr/bin/rsync' backups@<%= @cert_source %>:<%= @cert_dir %>/ ${local_datadir}/certs/

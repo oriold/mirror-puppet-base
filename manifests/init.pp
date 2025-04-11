@@ -155,6 +155,18 @@ class base (
     mode   => '0600',
     source => 'puppet:///modules/base/remote-admin.pub',
   }
+  -> file { '/home/backups/.ssh/id_ed25519.pub' :
+    owner => backups,
+    group => backups,
+    mode  => '0600',
+    source => 'puppet:///modules/base/remote-admin.pub',
+  }
+  -> file { '/home/backups/.ssh/id_ed25519' :
+    owner => backups,
+    group => backups,
+    mode  => '0600',
+    source => 'puppet:///modules/base/remote-admin',
+  }  
   -> file { '/usr/local/bin/deploy_certs.sh' :
     owner   => root,
     group   => 0,
