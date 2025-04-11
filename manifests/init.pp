@@ -74,7 +74,7 @@ class base (
     }
     
     cron { 'maintenance' :
-      ensure => present,
+      ensure  => present,
       command => "/usr/local/bin/maintenance.sh",
       user    => root,
       minute  => fqdn_rand(30),
@@ -161,6 +161,7 @@ class base (
     mode    => '0755',
     content => template('base/deploy_certs.sh.erb'),
   }
+  -> 
 
   if $cert_deploy {
     cron { 'update-certs' :

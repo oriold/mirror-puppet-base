@@ -9,8 +9,9 @@ then
 else
     if [ ! -d ${local_datadir}/certs ]
     then
-	mkdir ${local_datadir}/certs
+	echo "Missing certs directory, better leave"
+	exit 0
     fi
 fi
 
-rsync -avz --rsync-path='doas rsync' <%= @cert_source %>:<%= @cert_dir %>/ ${local_datadir}/certs/
+doas rsync -avz -i /home/backups/.ssh/id_ed25519 --rsync-path='doas rsync' backups@<%= @cert_source %>:<%= @cert_dir %>/ ${local_datadir}/certs/
