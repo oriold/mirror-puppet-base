@@ -168,15 +168,14 @@ class base (
     mode  => '0600',
     source => 'puppet:///modules/base/remote-admin',
   }  
-  -> file { '/usr/local/bin/deploy_certs.sh' :
+  if $cert_deploy {
+    file { '/usr/local/bin/deploy_certs.sh' :
     owner   => root,
     group   => 0,
     mode    => '0755',
     content => template('base/deploy_certs.sh.erb'),
-  }
-  -> 
-
-  if $cert_deploy {
+    }
+    -> 
     cron { 'update-certs' :
       ensure  => present,
       command => "/usr/local/bin/deploy_certs.sh > /dev/null 2>&1",
