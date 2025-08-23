@@ -37,6 +37,15 @@ class base::debian (
     content => template('base/local-vault.sh.erb'),
   }
 
+  # NIX
+  package { 'nix-setup-systemd':
+    ensure => installed,
+  }
+  user { 'oriol':
+    groups => ['nix-users'],
+    require => Package['nix-setup-systemd'],
+  }
+
   if $maintenance {
     package { 'cron-apt' :
       ensure => installed,

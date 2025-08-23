@@ -80,6 +80,26 @@ class base::alpine (
     content => template('base/local-vault.sh.erb'),
   }
 
+  # NIX
+  package = {[
+    'nix',
+    'nix-doc',
+    'nix-manual',
+    'nix-openrc',
+    'nix-zsh-completion'
+  ]:
+    ensure => installed,
+  }
+  service { 'nix-daemon' :
+    ensure => running,
+    enable => true,
+    require => Package['nix'],
+  }
+  user { 'oriol':
+    groups => ['nixbld', 'nix'],
+    require => Package['nix'],  
+  }
+
   # maintenance
   if $maintenance {
     package { 'apk-cron' :
