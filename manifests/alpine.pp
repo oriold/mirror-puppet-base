@@ -81,7 +81,7 @@ class base::alpine (
   }
 
   # NIX
-  package = {[
+  package { [
     'nix',
     'nix-doc',
     'nix-manual',
