@@ -21,8 +21,8 @@ class base::debian (
     group  => root,
     mode   => '0755',
   }
-  ->
-  file { '/var/db/geoip' :
+  
+  -> file { '/var/db/geoip' :
     ensure => directory,
     owner  => root,
     group  => root,
@@ -38,13 +38,13 @@ class base::debian (
   }
 
   # NIX
-  package { 'nix-setup-systemd':
-    ensure => installed,
-  }
-  user { 'oriol':
-    groups => ['nix-users'],
-    require => Package['nix-setup-systemd'],
-  }
+  #package { 'nix-setup-systemd':
+  #  ensure => installed,
+  #}
+  #user { 'oriol':
+  #  groups => ['nix-users'],
+  #  require => Package['nix-setup-systemd'],
+  #}
 
   if $maintenance {
     package { 'cron-apt' :
