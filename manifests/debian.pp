@@ -21,7 +21,7 @@ class base::debian (
     group  => root,
     mode   => '0755',
   }
-  
+
   -> file { '/var/db/geoip' :
     ensure => directory,
     owner  => root,
@@ -36,15 +36,6 @@ class base::debian (
     mode    => '0644',
     content => template('base/local-vault.sh.erb'),
   }
-
-  # NIX
-  #package { 'nix-setup-systemd':
-  #  ensure => installed,
-  #}
-  #user { 'oriol':
-  #  groups => ['nix-users'],
-  #  require => Package['nix-setup-systemd'],
-  #}
 
   if $maintenance {
     package { 'cron-apt' :
