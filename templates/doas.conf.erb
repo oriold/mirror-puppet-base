@@ -13,7 +13,7 @@ permit nopass setenv { \
 # Allow wheel by default
 permit nopass setenv { \
     EDITOR GOPATH PATH GPG_TTY LS_COLORS SSH_AUTH_SOCK \
-    TERM VAULT_ADDR VAULT_TOKEN HOME } :<%= @admin_group %>
+    TERM VAULT_ADDR VAULT_TOKEN } :<%= @admin_group %>
 
 # BackupPC
 permit nopass backups cmd <%= @bin_dir %>/rsync
