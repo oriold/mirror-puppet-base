@@ -14,7 +14,7 @@ else
     fi
 fi
 
-doas <%= @bin_dir %>/rsync -avz --delete -e 'ssh -i /home/backups/.ssh/id_ed25519' --rsync-path='doas /run/current-system/sw/bin/rsync' backups@<%= @cert_source %>:<%= @cert_dir %>/ ${local_datadir}/certs/
+doas <%= @bin_dir %>/rsync -avz -e 'ssh -i /home/backups/.ssh/id_ed25519' --rsync-path='doas /run/current-system/sw/bin/rsync' backups@<%= @cert_source %>:<%= @cert_dir %>/ ${local_datadir}/certs/
 
 # Specific actions to be taken after
 <% if @cert_postcmd %>
