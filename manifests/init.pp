@@ -7,9 +7,9 @@ class base (
   $bin_dir          = undef,
   $blacklistd       = undef,
   $cert_deploy      = true,
-  $cert_dir         = '/var/lib/dehydrated/certs',
+  $cert_dir         = '/data/certs',
   $cert_postcmd     = undef,
-  $cert_source      = 'onyx.triceratops-chimera.ts.net',
+  $cert_source      = 'triceratops.triceratops-chimera.ts.net',
   $etc_dir          = undef,
   $kbd_lang         = 'es',
   $local_packages   = undef,
@@ -51,7 +51,7 @@ class base (
   package { $uninstall_pkgs :
     ensure => absent,
   }
-  
+
   # SSH
   service { $ssh_service :
     ensure => running,
@@ -73,10 +73,10 @@ class base (
       mode    => '0755',
       content => template('base/maintenance.sh.erb'),
     }
-    
+
     cron { 'maintenance' :
       ensure  => present,
-      command => "/usr/local/bin/maintenance.sh",
+      command => '/usr/local/bin/maintenance.sh',
       user    => root,
       minute  => fqdn_rand(30),
       hour    => 3,
@@ -157,17 +157,17 @@ class base (
     source => 'puppet:///modules/base/remote-admin.pub',
   }
   -> file { '/home/backups/.ssh/id_ed25519.pub' :
-    owner => backups,
-    group => backups,
-    mode  => '0600',
+    owner  => backups,
+    group  => backups,
+    mode   => '0600',
     source => 'puppet:///modules/base/remote-admin.pub',
   }
   -> file { '/home/backups/.ssh/id_ed25519' :
-    owner => backups,
-    group => backups,
-    mode  => '0600',
+    owner  => backups,
+    group  => backups,
+    mode   => '0600',
     source => 'puppet:///modules/base/remote-admin',
-  }  
+  }
   if $cert_deploy {
     file { '/usr/local/bin/deploy_certs.sh' :
     owner   => root,
@@ -175,14 +175,14 @@ class base (
     mode    => '0755',
     content => template('base/deploy_certs.sh.erb'),
     }
-    -> 
-    cron { 'update-certs' :
+    
+    -> cron { 'update-certs' :
       ensure  => present,
-      command => "/usr/local/bin/deploy_certs.sh > /dev/null 2>&1",
+      command => '/usr/local/bin/deploy_certs.sh > /dev/null 2>&1',
       user    => backups,
       minute  => fqdn_rand(20),
       hour    => 0,
-      require => [ 
+      require => [
                    File['/usr/local/bin/deploy_certs.sh'],
                    User['backups'],
                  ],
@@ -214,7 +214,7 @@ class base (
 
   cron { 'update-geoip' :
     ensure  => present,
-    command => "/usr/local/bin/update-geoip.sh > /dev/null 2>&1",
+    command => '/usr/local/bin/update-geoip.sh > /dev/null 2>&1',
     user    => root,
     minute  => fqdn_rand(60),
     hour    => 11,
@@ -231,10 +231,10 @@ class base (
 
   # root checkout
   file { '/root/.ssh' :
-    ensure  => directory,
-    owner   => root,
-    group   => 0,
-    mode    => '0700',
+    ensure => directory,
+    owner  => root,
+    group  => 0,
+    mode   => '0700',
   }
   -> file { '/root/.ssh/deploy' :
     owner  => root,
@@ -257,4 +257,3 @@ class base (
     target       => '/etc/hosts',
   }
 }
-
